@@ -5,9 +5,6 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>搭窝 i.n.g. — 一个正在发生的窝</title>
 <meta name="description" content="I.N.G，一个有归属感、有生命力的窝。六个正在发生的角落，邀请你一起搭建和创造。">
-<link rel="preconnect" href="https://fonts.loli.net" crossorigin>
-<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
-<link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet">
 <style>
   :root{
     --paper:#FAF3E7;
@@ -23,8 +20,10 @@
     --memory:#8A5E4B;
     --sharing:#B5657D;
     --serif-en:Georgia,'Times New Roman',serif;
-    --kai:'LXGW WenKai','Kaiti SC','STKaiti',KaiTi,'LXGW WenKai TC',serif;
-    --brush:'Ma Shan Zheng','LXGW WenKai','Kaiti SC','STKaiti',KaiTi,serif;
+    /* Georgia 在前：拉丁字符走 Georgia，中文字符自动落到华文楷体；
+       华文楷体 Windows / iOS 均自带，无网络字体，跨设备一致 */
+    --kai:Georgia,'STKaiti','华文楷体','Kaiti SC','KaiTi','BiauKai',serif;
+    --brush:Georgia,'STKaiti','华文楷体','Kaiti SC','KaiTi','BiauKai',serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -60,15 +59,15 @@
 
   h2{
     font-family:var(--brush);
-    font-weight:400;
-    font-size:clamp(34px,7vw,50px);
-    line-height:1.3;
+    font-weight:700;
+    font-size:34px;
+    line-height:1.32;
     margin:.35em 0 .5em;
     text-wrap:balance;
   }
   .pull{
-    font-size:clamp(19px,3.6vw,23px);
-    line-height:1.75;
+    font-size:21px;
+    line-height:1.7;
     font-weight:700;
     text-wrap:balance;
   }
@@ -100,14 +99,15 @@
   }
   h1{
     font-family:var(--brush);
-    font-weight:400;
-    font-size:clamp(58px,15vw,110px);
-    line-height:1.15;
-    margin:.15em 0 .1em;
+    font-weight:700;
+    font-size:clamp(60px,17vw,92px);
+    line-height:1.18;
+    margin:.15em 0 .18em;
   }
   h1 .ing{color:#F2B26B}
   .hero-line{
-    font-size:clamp(17px,3.4vw,20px);
+    font-size:17px;
+    line-height:1.85;
     max-width:30em;
     color:#F6E7D2;
     text-shadow:0 1px 12px rgba(43,30,24,.5);
@@ -132,7 +132,7 @@
     display:block;font-size:15px;letter-spacing:.1em;color:var(--amber-deep);margin-bottom:.3em;
     font-family:var(--serif-en);font-style:italic;
   }
-  .tense p{color:var(--ink-soft);font-size:16px}
+  .tense p{color:var(--ink-soft);font-size:17px}
 
   .ing-cards{display:flex;flex-direction:column;gap:14px;margin:3em 0 2em}
   .ing-card{
@@ -149,7 +149,7 @@
   .ing-card .en{font-family:var(--serif-en);font-style:italic;font-size:13px;color:var(--ink-soft);display:block}
   .glow-line{
     font-family:var(--serif-en);font-style:italic;font-weight:700;
-    font-size:clamp(22px,5vw,30px);letter-spacing:.06em;color:var(--amber-deep);
+    font-size:26px;letter-spacing:.06em;color:var(--amber-deep);
     text-align:center;margin:1.6em 0 0;
   }
 
@@ -220,7 +220,7 @@
   details.more[open] summary{margin-bottom:.8em}
   .chips{list-style:none;display:flex;flex-direction:column;gap:9px;margin:.2em 0 1.4em}
   .chips li{
-    font-size:15.5px;color:var(--ink-soft);
+    font-size:17px;color:var(--ink-soft);
     padding-left:1.4em;position:relative;
   }
   .chips li::before{
@@ -248,7 +248,7 @@
   }
   .finale .bg{position:absolute;inset:0;z-index:-2;background:url(img/invite.jpg) center/cover no-repeat}
   .finale .tint{position:absolute;inset:0;z-index:-1;background:rgba(52,32,38,.62)}
-  .finale h2{font-size:clamp(36px,8vw,58px)}
+  .finale h2{font-size:40px}
   .finale p{max-width:26em;margin:0 auto 1.2em;color:#F6E3D4}
   .finale .glow-line{color:#F2B26B}
   footer{
