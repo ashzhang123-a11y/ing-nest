@@ -5,168 +5,164 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>搭窝 i.n.g. — 一个正在发生的窝</title>
 <meta name="description" content="I.N.G，一个有归属感、有生命力的窝。六个正在发生的角落，邀请你一起搭建和创造。">
+<link rel="preload" as="image" href="img/hero.webp" fetchpriority="high">
 <style>
   :root{
-    --paper:#FAF3E7;
-    --paper-deep:#F3E7D3;
-    --ink:#3B2A1E;
-    --ink-soft:#6B5442;
-    --amber:#C98A4B;
-    --amber-deep:#A96F33;
-    --becoming:#55703F;
-    --enjoy:#C96F4A;
-    --glow:#B6832E;
-    --moveon:#41628A;
-    --memory:#8A5E4B;
-    --sharing:#B5657D;
+    --paper:#F5EFE5;
+    --paper-deep:#E8DECD;
+    --ink:#322A22;
+    --ink-soft:#5A4E41;
+    --amber:#B07A3E;
+    --amber-deep:#8C6226;
+    /* refined, muted per-corner tones */
+    --becoming:#4F5E44;
+    --enjoy:#9E5741;
+    --glow:#806020;
+    --moveon:#445B70;
+    --memory:#74503F;
+    --sharing:#8E4F63;
     --serif-en:Georgia,'Times New Roman',serif;
-    /* Georgia 在前：拉丁走 Georgia，中文落到华文楷体；均为系统字体，跨设备一致 */
     --kai:Georgia,'STKaiti','华文楷体','Kaiti SC','KaiTi','BiauKai',serif;
     --brush:Georgia,'STKaiti','华文楷体','Kaiti SC','KaiTi','BiauKai',serif;
   }
   *{margin:0;padding:0;box-sizing:border-box}
   html{scroll-behavior:smooth}
   body{
-    background:var(--paper);
-    color:var(--ink);
-    font-family:var(--kai);
-    font-size:17px;
-    line-height:1.9;
-    overflow-x:hidden;
-    -webkit-font-smoothing:antialiased;
+    background:var(--paper);color:var(--ink);
+    font-family:var(--kai);font-size:17px;line-height:1.9;
+    overflow-x:hidden;-webkit-font-smoothing:antialiased;
   }
   ::selection{background:var(--amber);color:#fff}
-  img{max-width:100%}
+  img{max-width:100%;display:block}
+  p,li,.lead{text-wrap:pretty}
+  h1,h2,.pull,.c-pull,.band-cap .t,.tense b,.glow-line,.idx .nm{text-wrap:balance}
 
-  /* ---------- fixed chrome ---------- */
+  /* fixed chrome */
   #bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--amber);z-index:60;transition:width .1s linear}
-  #motes{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.55}
+  #motes{position:fixed;inset:0;z-index:50;pointer-events:none;opacity:.5}
 
-  /* ---------- shared type ---------- */
-  .wrap{max-width:680px;margin:0 auto;padding:0 24px}
-  .kicker{
-    font-family:var(--serif-en);font-style:italic;font-size:13px;
-    letter-spacing:.18em;color:var(--amber-deep);text-transform:uppercase;
-  }
-  h2{font-family:var(--brush);font-weight:700;font-size:34px;line-height:1.32;margin:.35em 0 .5em;text-wrap:balance}
-  .pull{font-size:21px;line-height:1.7;font-weight:700;text-wrap:balance}
-  p.body{margin-bottom:1.2em;color:var(--ink-soft)}
+  /* shared type */
+  .wrap{max-width:660px;margin:0 auto;padding:0 26px}
+  .kicker{font-family:var(--serif-en);font-style:italic;font-size:13px;letter-spacing:.18em;color:var(--amber-deep);text-transform:uppercase}
+  h2{font-family:var(--brush);font-weight:700;font-size:32px;line-height:1.34;margin:.35em 0 .5em}
+  .pull{font-size:21px;line-height:1.72;font-weight:700}
+  p.body{margin-bottom:1.15em;color:var(--ink-soft)}
   p.body strong{color:var(--ink)}
 
-  /* ---------- reveal + stagger ---------- */
-  .reveal{opacity:0;transform:translateY(28px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
+  /* reveal + stagger */
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.2,.7,.2,1),transform .9s cubic-bezier(.2,.7,.2,1)}
   .reveal.in{opacity:1;transform:none}
-  .d1{transition-delay:.10s}.d2{transition-delay:.22s}.d3{transition-delay:.34s}.d4{transition-delay:.46s}
+  .d1{transition-delay:.10s}.d2{transition-delay:.22s}.d3{transition-delay:.34s}
 
-  /* ---------- parallax scaffold ---------- */
+  /* parallax scaffold */
   .px{position:absolute;inset:0;z-index:-2;overflow:hidden}
-  .px-bg{position:absolute;left:0;right:0;top:-10%;height:120%;background-size:cover;background-position:center}
+  img.px-bg{position:absolute;left:0;top:-10%;width:100%;height:120%;object-fit:cover;object-position:center;user-select:none}
 
-  /* ---------- hero ---------- */
-  header{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;color:#FFF6EA;isolation:isolate;overflow:hidden}
-  header .tint{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(43,30,24,.26) 0%,rgba(43,30,24,.10) 42%,rgba(43,30,24,.74) 100%)}
-  .hero-inner{padding:0 24px 9svh;max-width:680px;margin:0 auto;width:100%}
-  .hero-kicker{font-family:var(--serif-en);font-style:italic;font-size:14px;letter-spacing:.28em;color:#F2CFA0;text-transform:uppercase}
-  h1{font-family:var(--brush);font-weight:700;font-size:clamp(60px,17vw,92px);line-height:1.18;margin:.15em 0 .18em}
-  h1 .ing{color:#F2B26B}
-  .hero-line{font-size:17px;line-height:1.85;max-width:30em;color:#F6E7D2;text-shadow:0 1px 12px rgba(43,30,24,.5)}
-  .scroll-hint{margin-top:5vh;font-family:var(--serif-en);font-style:italic;font-size:12px;letter-spacing:.2em;color:#E9CFA8}
+  /* hero */
+  header{position:relative;min-height:100svh;display:flex;flex-direction:column;justify-content:flex-end;color:#FBEFDD;isolation:isolate;overflow:hidden}
+  header .tint{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(38,27,20,.24) 0%,rgba(38,27,20,.08) 42%,rgba(34,24,18,.76) 100%)}
+  .hero-inner{padding:0 26px 9svh;max-width:660px;margin:0 auto;width:100%}
+  .hero-kicker{font-family:var(--serif-en);font-style:italic;font-size:14px;letter-spacing:.26em;color:#EDCB98;text-transform:uppercase}
+  h1{font-family:var(--brush);font-weight:700;font-size:clamp(58px,17vw,90px);line-height:1.18;margin:.15em 0 .2em}
+  h1 .ing{color:#E7AC63}
+  .hero-line{font-size:17px;line-height:1.85;max-width:28em;color:#F3E2CC;text-shadow:0 1px 12px rgba(34,22,14,.55)}
+  .scroll-hint{margin-top:5vh;font-family:var(--serif-en);font-style:italic;font-size:12px;letter-spacing:.2em;color:#E2C79C}
   .scroll-hint::after{content:"↓";display:block;font-size:18px;margin-top:6px;animation:bob 2.2s ease-in-out infinite}
   @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
 
-  /* ---------- manifesto : the name ---------- */
+  /* manifesto : the name */
   .manifesto{padding:14vh 0 11vh}
-  .tenses{margin:3em 0;display:flex;flex-direction:column;gap:1.5em}
-  .tense{border-left:3px solid var(--paper-deep);padding-left:1.2em}
-  .tense b{display:block;font-size:15px;letter-spacing:.1em;color:var(--amber-deep);margin-bottom:.3em;font-family:var(--serif-en);font-style:italic}
+  .tenses{margin:2.8em 0;display:flex;flex-direction:column;gap:1.5em}
+  .tense{border-left:2px solid var(--amber);padding-left:1.2em}
+  .tense b{display:block;font-size:15px;letter-spacing:.08em;color:var(--amber-deep);margin-bottom:.3em;font-family:var(--serif-en);font-style:italic}
   .tense p{color:var(--ink-soft);font-size:17px}
-  .ing-cards{display:flex;flex-direction:column;gap:14px;margin:3em 0 2em}
-  .ing-card{background:#fff;border-radius:14px;padding:20px 24px;box-shadow:0 2px 14px rgba(59,42,30,.07);display:flex;align-items:baseline;gap:18px}
-  .ing-card .letter{font-family:var(--serif-en);font-size:38px;font-weight:700;color:var(--amber);line-height:1;min-width:34px;text-align:center}
-  .ing-card .en{font-family:var(--serif-en);font-style:italic;font-size:13px;color:var(--ink-soft);display:block}
-  .glow-line{font-family:var(--serif-en);font-style:italic;font-weight:700;font-size:26px;letter-spacing:.06em;color:var(--amber-deep);text-align:center;margin:1.6em 0 0}
+  .ing-cards{display:flex;flex-direction:column;gap:13px;margin:2.8em 0 2em}
+  .ing-card{background:#FCF8F0;border-radius:14px;padding:19px 23px;box-shadow:0 3px 16px rgba(50,36,26,.06);display:flex;align-items:baseline;gap:18px}
+  .ing-card .letter{font-family:var(--serif-en);font-size:37px;font-weight:700;color:var(--amber);line-height:1;min-width:32px;text-align:center}
+  .ing-card .en{font-family:var(--serif-en);font-style:italic;font-size:13px;color:var(--ink-soft);display:block;margin-top:2px}
+  .glow-line{font-family:var(--serif-en);font-style:italic;font-weight:700;font-size:25px;letter-spacing:.05em;color:var(--amber-deep);text-align:center;margin:1.6em 0 0}
 
-  /* ---------- why the nest (full-bleed) ---------- */
-  .why-nest{position:relative;color:#FFF6EA;isolation:isolate;padding:17vh 0;overflow:hidden}
-  .why-nest .tint{position:absolute;inset:0;z-index:-1;background:rgba(43,30,24,.66)}
-  .why-nest .pull{color:#FFE9C9}
-  .why-nest p.body{color:#F0DFC8}
-  .why-nest .kicker{color:#F2CFA0}
+  /* why the nest */
+  .why-nest{position:relative;color:#FBEFDD;isolation:isolate;padding:17vh 0;overflow:hidden}
+  .why-nest .tint{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(34,24,18,.62),rgba(34,24,18,.72))}
+  .why-nest .pull{color:#FCE6C6}
+  .why-nest p.body{color:#EEDDC4}
+  .why-nest .kicker{color:#EDCB98}
 
-  /* ---------- corners index ---------- */
+  /* corners index */
   .corners-intro{padding:13vh 0 3vh;text-align:center}
-  .corners-intro p{color:var(--ink-soft);max-width:32em;margin:0 auto}
-  .index-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:680px;margin:2.6em auto 0;padding:0 24px}
-  .idx{position:relative;display:block;aspect-ratio:5/6;border-radius:16px;overflow:hidden;text-decoration:none;box-shadow:0 6px 20px rgba(59,42,30,.14);isolation:isolate}
-  .idx .ib{position:absolute;inset:0;background-size:cover;background-position:center;z-index:-2;transition:transform .6s ease}
-  .idx .it{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(30,20,14,.10),rgba(30,20,14,.66))}
+  .corners-intro p{color:var(--ink-soft);max-width:30em;margin:0 auto}
+  .index-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:660px;margin:2.6em auto 0;padding:0 26px}
+  .idx{position:relative;display:block;aspect-ratio:5/6;border-radius:16px;overflow:hidden;text-decoration:none;box-shadow:0 6px 20px rgba(50,36,26,.13);isolation:isolate}
+  .idx .ib{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:-2;transition:transform .6s ease}
+  .idx .it{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(28,19,12,.06) 30%,color-mix(in srgb,var(--hue) 42%,rgba(24,16,10,.74)) 100%)}
   .idx:hover .ib,.idx:focus-visible .ib{transform:scale(1.06)}
-  .idx .lab{position:absolute;left:0;right:0;bottom:0;padding:14px 15px;color:#FFF6EA}
-  .idx .n{font-family:var(--serif-en);font-size:12px;letter-spacing:.12em;opacity:.9}
-  .idx .nm{font-family:var(--brush);font-weight:700;font-size:19px;line-height:1.2;margin-top:2px}
+  .idx .lab{position:absolute;left:0;right:0;bottom:0;padding:13px 15px;color:#FBEFDD}
+  .idx .n{font-family:var(--serif-en);font-size:11.5px;letter-spacing:.12em;opacity:.92}
+  .idx .nm{font-family:var(--brush);font-weight:700;font-size:19px;line-height:1.2;margin-top:2px;text-shadow:0 1px 8px rgba(20,12,6,.5)}
   .idx .bar{position:absolute;top:0;left:0;right:0;height:4px;background:var(--hue)}
   .idx:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 
-  /* ---------- corner chapter ---------- */
-  .cover{position:relative;min-height:90svh;display:flex;align-items:flex-end;color:#FFF6EA;isolation:isolate;overflow:hidden}
+  /* corner chapter */
+  .cover{position:relative;min-height:88svh;display:flex;align-items:flex-end;color:#FBEFDD;isolation:isolate;overflow:hidden}
   .cover .tint{position:absolute;inset:0;z-index:-1}
-  .cover-inner{padding:0 24px 11svh;max-width:680px;margin:0 auto;width:100%}
-  .c-num{font-family:var(--serif-en);font-size:14px;font-weight:700;letter-spacing:.16em;color:#F5D9AE;display:block;margin-bottom:.5em}
-  .cover h2{color:#FFF7EC;font-size:clamp(38px,10vw,54px);margin:.1em 0 .35em;text-shadow:0 2px 20px rgba(20,12,6,.45)}
-  .c-pull{font-size:clamp(19px,4.6vw,23px);line-height:1.55;font-weight:700;color:#FFEAC9;max-width:19em;text-shadow:0 2px 16px rgba(20,12,6,.5)}
+  .cover-inner{padding:0 26px 11svh;max-width:660px;margin:0 auto;width:100%}
+  .c-num{font-family:var(--serif-en);font-size:13.5px;font-weight:700;letter-spacing:.16em;color:#F1D6A9;display:block;margin-bottom:.5em}
+  .cover h2{color:#FDF4E6;font-size:clamp(36px,9vw,52px);margin:.1em 0 .4em;text-shadow:0 2px 22px rgba(18,11,5,.5)}
+  .c-pull{font-size:clamp(18px,4.4vw,22px);line-height:1.6;font-weight:700;color:#FCE7C6;text-shadow:0 2px 16px rgba(18,11,5,.55)}
 
-  .corner-body{padding:11vh 0 4vh;background:linear-gradient(180deg,var(--paper),var(--paper) 70%,transparent)}
-  .qlabel{display:inline-block;font-weight:700;font-size:15px;letter-spacing:.04em;margin:0 0 .8em;padding:4px 15px;border-radius:999px;background:var(--paper-deep);color:var(--ink)}
-  .lead{font-size:17px;color:var(--ink);margin-bottom:1.1em}
-  details.more{margin:-.2em 0 .4em}
-  details.more summary{cursor:pointer;list-style:none;display:inline-block;font-size:14px;color:var(--hue);border-bottom:1px dashed var(--hue);padding-bottom:1px}
-  details.more summary::-webkit-details-marker{display:none}
-  details.more summary::after{content:" ↓"}
-  details.more[open] summary::after{content:" ↑"}
-  details.more[open] summary{margin-bottom:.9em}
-  details.more p.body{animation:fade .6s ease}
+  .corner-body{padding:11vh 0 5vh;background:linear-gradient(180deg,var(--paper),var(--paper) 72%,transparent)}
+  .qlabel{display:inline-block;font-weight:700;font-size:15px;letter-spacing:.03em;margin:0 0 .85em;padding:5px 16px;border-radius:999px}
+  .corner-body .qlabel,.corner-after .qlabel{color:var(--hue);background:color-mix(in srgb,var(--hue) 13%,var(--paper))}
+  .lead{font-size:17.5px;color:var(--ink);margin-bottom:1.15em}
+
+  /* future band */
+  .band{position:relative;min-height:54svh;display:flex;align-items:flex-end;color:#FBEFDD;isolation:isolate;overflow:hidden;margin-top:2vh}
+  .band .tint{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(26,17,11,.10) 0%,rgba(26,17,11,.28) 48%,color-mix(in srgb,var(--hue) 26%,rgba(24,15,9,.82)) 100%)}
+  .band-cap{padding:0 26px 6vh;max-width:660px;margin:0 auto;width:100%}
+  .band-cap .k{font-family:var(--serif-en);font-style:italic;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#F0D2A4}
+  .band-cap .t{font-family:var(--brush);font-weight:700;font-size:clamp(24px,6vw,32px);line-height:1.3;margin-top:.28em;text-shadow:0 2px 16px rgba(18,11,5,.55)}
+
+  .corner-after{padding:8vh 0 4vh}
+  /* foldable future */
+  details.fold{margin:.2em 0 1.9em;border:1px solid color-mix(in srgb,var(--hue) 26%,transparent);border-radius:13px;overflow:hidden;background:color-mix(in srgb,var(--hue) 5%,var(--paper))}
+  details.fold>summary{cursor:pointer;list-style:none;padding:15px 18px;font-weight:700;font-size:16px;color:var(--hue);display:flex;justify-content:space-between;align-items:center;gap:12px}
+  details.fold>summary::-webkit-details-marker{display:none}
+  details.fold>summary .plus{font-family:var(--serif-en);font-size:20px;line-height:1;transition:transform .3s ease}
+  details.fold[open]>summary .plus{transform:rotate(45deg)}
+  details.fold .fb{padding:0 18px 17px}
+  details.fold .fb p{color:var(--ink-soft);margin:0}
+  details.fold[open] .fb{animation:fade .5s ease}
   @keyframes fade{from{opacity:0}to{opacity:1}}
 
-  /* future image band */
-  .band{position:relative;min-height:56svh;display:flex;align-items:flex-end;color:#FFF6EA;isolation:isolate;overflow:hidden;margin:2vh 0 0}
-  .band .tint{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(28,18,12,.12) 0%,rgba(28,18,12,.30) 50%,rgba(28,18,12,.80) 100%)}
-  .band-cap{padding:0 24px 6vh;max-width:680px;margin:0 auto;width:100%}
-  .band-cap .k{font-family:var(--serif-en);font-style:italic;font-size:13px;letter-spacing:.16em;text-transform:uppercase;color:#F3CE9E}
-  .band-cap .t{font-family:var(--brush);font-weight:700;font-size:clamp(24px,6vw,32px);line-height:1.3;margin-top:.25em;text-shadow:0 2px 16px rgba(20,12,6,.5)}
+  .chips{list-style:none;display:flex;flex-direction:column;gap:10px;margin:.2em 0 1.7em}
+  .chips li{font-size:16.5px;color:var(--ink-soft);padding-left:1.5em;position:relative}
+  .chips li::before{content:"";position:absolute;left:0;top:.72em;width:.85em;height:2px;background:var(--hue)}
+  .closing{font-weight:700;font-style:italic;padding:1.1em 0 0;border-top:1px solid color-mix(in srgb,var(--hue) 24%,transparent);color:var(--hue)}
 
-  .corner-after{padding:9vh 0 3vh}
-  .chips{list-style:none;display:flex;flex-direction:column;gap:10px;margin:.2em 0 1.6em}
-  .chips li{font-size:17px;color:var(--ink-soft);padding-left:1.5em;position:relative}
-  .chips li::before{content:"";position:absolute;left:0;top:.72em;width:.8em;height:2px;background:var(--hue)}
-  .closing{font-weight:700;font-style:italic;padding:1.1em 0 0;border-top:1px dashed rgba(59,42,30,.2);color:var(--hue)}
-
-  /* per-corner hue */
   .c-becoming{--hue:var(--becoming)} .c-enjoy{--hue:var(--enjoy)} .c-glow{--hue:var(--glow)}
   .c-moveon{--hue:var(--moveon)} .c-memory{--hue:var(--memory)} .c-sharing{--hue:var(--sharing)}
-  .corner-body .qlabel{color:var(--hue);background:color-mix(in srgb,var(--hue) 14%,var(--paper-deep))}
-  .cover .tint{background:linear-gradient(180deg,rgba(26,16,10,.12) 0%,rgba(26,16,10,.30) 40%,rgba(26,16,10,.55) 72%,color-mix(in srgb,var(--hue) 30%,rgba(26,16,10,.85)) 100%)}
+  .cover .tint{background:linear-gradient(180deg,rgba(24,15,9,.10) 0%,rgba(24,15,9,.28) 42%,rgba(24,15,9,.52) 70%,color-mix(in srgb,var(--hue) 32%,rgba(24,15,9,.86)) 100%)}
 
-  /* ---------- finale ---------- */
-  .finale{position:relative;color:#FFF6EA;isolation:isolate;padding:19vh 0 15vh;text-align:center;overflow:hidden}
-  .finale .tint{position:absolute;inset:0;z-index:-1;background:rgba(52,32,38,.60)}
-  .finale h2{font-size:42px}
-  .finale p{max-width:26em;margin:0 auto 1.2em;color:#F6E3D4}
-  .finale .glow-line{color:#F2B26B}
-  footer{padding:34px 24px;text-align:center;font-family:var(--serif-en);font-style:italic;font-size:12px;letter-spacing:.16em;color:var(--ink-soft)}
+  /* finale */
+  .finale{position:relative;color:#FBEFDD;isolation:isolate;padding:19vh 0 15vh;text-align:center;overflow:hidden}
+  .finale .tint{position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(48,30,34,.5),rgba(48,30,34,.66))}
+  .finale h2{font-size:40px;color:#FDF4E6}
+  .finale p{max-width:24em;margin:0 auto 1.2em;color:#F3E1D2}
+  .finale .glow-line{color:#E7AC63}
+  footer{padding:34px 26px;text-align:center;font-family:var(--serif-en);font-style:italic;font-size:12px;letter-spacing:.16em;color:var(--ink-soft)}
 
-  /* ---------- desktop refinements ---------- */
   @media (min-width:860px){
-    .index-grid{grid-template-columns:1fr 1fr 1fr;max-width:940px}
-    .cover-inner,.band-cap,.hero-inner{max-width:760px}
-    .cover h2{font-size:60px}
+    .index-grid{grid-template-columns:1fr 1fr 1fr;max-width:920px}
+    .cover-inner,.band-cap,.hero-inner{max-width:740px}
+    .cover h2{font-size:58px}
   }
-
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .reveal{opacity:1 !important;transform:none !important;transition:none}
     .scroll-hint::after{animation:none}
     #motes{display:none}
-    .px-bg{top:0;height:100%}
+    img.px-bg{top:0;height:100%}
   }
 </style>
 </head>
@@ -176,7 +172,7 @@
 
 <!-- ================= HERO ================= -->
 <header data-px>
-  <div class="px"><div class="px-bg" style="background-image:url(img/hero.jpg);background-position:center 30%"></div></div>
+  <div class="px"><img class="px-bg" src="img/hero.webp" alt="" fetchpriority="high" style="object-position:center 30%"></div>
   <div class="tint"></div>
   <div class="hero-inner">
     <div class="hero-kicker reveal">Invitation · A Nest in Progress</div>
@@ -209,11 +205,11 @@
 
 <!-- ================= WHY THE NEST ================= -->
 <section class="why-nest" data-px>
-  <div class="px"><div class="px-bg" style="background-image:url(img/story.jpg)"></div></div>
+  <div class="px"><img class="px-bg" src="img/story.webp" alt="" loading="lazy" decoding="async"></div>
   <div class="tint"></div>
   <div class="wrap">
     <div class="kicker reveal">Why This Nest Exists</div>
-    <h2 class="reveal">我理想的这个窝，<br>不是一个睡觉的地方，<br>而是一个能让我满血复活的地方。</h2>
+    <h2 class="reveal">我理想的这个窝，不是一个睡觉的地方，而是一个能让我满血复活的地方。</h2>
     <p class="body reveal">我很认真的问了自己，什么时刻我感受到幸福和爱。然后我回想起每次我站在我的照片墙面前，看见我爱的、爱我的人在我生命中的痕迹，想起我们过往共同经历的事件，会有一股暖流充斥在我的内心。</p>
     <p class="body reveal">我一直知道我害怕孤独，所以我希望有很多爱和美好和陪伴塞满我的世界。</p>
     <p class="pull reveal">所以，或许你想要在 ING 留下你的痕迹和我们的共同回忆，和我一起搭一个窝么~</p>
@@ -228,19 +224,19 @@
     <p class="reveal">每个角落都还没有长成最终的模样——它们在等和它频率相同的人，一起把它想清楚、做出来。点一个，先走进去看看。</p>
   </div>
   <div class="index-grid">
-    <a class="idx c-becoming reveal" style="--hue:var(--becoming)" href="#becoming"><div class="ib" style="background-image:url(img/becoming.jpg)"></div><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">01 · BECOMING</div><div class="nm">正在成为自己</div></div></a>
-    <a class="idx c-enjoy reveal d1" style="--hue:var(--enjoy)" href="#enjoy"><div class="ib" style="background-image:url(img/enjoy.jpg)"></div><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">02 · ENJOYING</div><div class="nm">正在享受当下</div></div></a>
-    <a class="idx c-glow reveal d2" style="--hue:var(--glow)" href="#glow"><div class="ib" style="background-image:url(img/glow.jpg)"></div><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">03 · GLOWING</div><div class="nm">正在发光</div></div></a>
-    <a class="idx c-moveon reveal" style="--hue:var(--moveon)" href="#moveon"><div class="ib" style="background-image:url(img/moveon.jpg)"></div><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">04 · MOVING ON</div><div class="nm">正在发生</div></div></a>
-    <a class="idx c-memory reveal d1" style="--hue:var(--memory)" href="#memory"><div class="ib" style="background-image:url(img/memory.jpg)"></div><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">05 · REMEMBERING</div><div class="nm">记忆博物馆</div></div></a>
-    <a class="idx c-sharing reveal d2" style="--hue:var(--sharing)" href="#sharing"><div class="ib" style="background-image:url(img/sharing.jpg)"></div><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">06 · SHARING</div><div class="nm">分享美好柜</div></div></a>
+    <a class="idx c-becoming reveal" style="--hue:var(--becoming)" href="#becoming"><img class="ib" src="img/becoming_idx.webp" alt="正在成为自己" loading="lazy" decoding="async"><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">01 · BECOMING</div><div class="nm">正在成为自己</div></div></a>
+    <a class="idx c-enjoy reveal d1" style="--hue:var(--enjoy)" href="#enjoy"><img class="ib" src="img/enjoy_idx.webp" alt="正在享受当下" loading="lazy" decoding="async"><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">02 · ENJOYING</div><div class="nm">正在享受当下</div></div></a>
+    <a class="idx c-glow reveal d2" style="--hue:var(--glow)" href="#glow"><img class="ib" src="img/glow_idx.webp" alt="正在发光" loading="lazy" decoding="async"><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">03 · GLOWING</div><div class="nm">正在发光</div></div></a>
+    <a class="idx c-moveon reveal" style="--hue:var(--moveon)" href="#moveon"><img class="ib" src="img/moveon_idx.webp" alt="正在发生" loading="lazy" decoding="async"><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">04 · MOVING ON</div><div class="nm">正在发生</div></div></a>
+    <a class="idx c-memory reveal d1" style="--hue:var(--memory)" href="#memory"><img class="ib" src="img/memory_idx.webp" alt="记忆博物馆" loading="lazy" decoding="async"><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">05 · REMEMBERING</div><div class="nm">记忆博物馆</div></div></a>
+    <a class="idx c-sharing reveal d2" style="--hue:var(--sharing)" href="#sharing"><img class="ib" src="img/sharing_idx.webp" alt="分享美好柜" loading="lazy" decoding="async"><div class="it"></div><span class="bar"></span><div class="lab"><div class="n">06 · SHARING</div><div class="nm">分享美好柜</div></div></a>
   </div>
 </section>
 
 <!-- ================= CORNER 01 ================= -->
 <section class="corner c-becoming" id="becoming">
   <div class="cover" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/becoming.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/becoming.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
     <div class="cover-inner">
       <span class="c-num reveal">01 · I AM BECOMING MYSELF</span>
@@ -252,21 +248,18 @@
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
       <p class="lead reveal">在过去的一年，我一直试图在找自己，我是谁，我从哪里来，我要去哪里。我在找自己的来时路，找为什么成为了现在的自己。</p>
-      <details class="more reveal">
-        <summary>读完整的故事</summary>
-        <p class="body">但当有一天我脑海里面，一个积极乐观强大的我和一个懦弱无力退缩的我在疯狂争论吵架时，我在大脑里看着这两个我自己意识到：塑造我的不是过往的我，而是此时此刻的我，选择成为谁。我们不是已经成为谁，而是正在成为谁——这是我很喜欢 ING 这个词的原因之一。</p>
-        <p class="body">我想让每个来到这里的人，都可以在进入这扇门之后，留下一个此时此刻想要选择成为的自己：<strong>I am ______ING</strong></p>
-      </details>
+      <p class="body reveal">但当有一天我脑海里面，一个积极乐观强大的我和一个懦弱无力退缩的我在疯狂争论吵架时，我在大脑里看着这两个我自己意识到：塑造我的不是过往的我，而是此时此刻的我，选择成为谁。我们不是已经成为谁，而是正在成为谁——这是我很喜欢 ING 这个词的原因之一。</p>
+      <p class="body reveal">我想让每个来到这里的人，都可以在进入这扇门之后，留下一个此时此刻想要选择成为的自己：<strong>I am ______ING</strong></p>
     </div>
   </div>
   <div class="band" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/becoming_f.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/becoming_f.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
-    <div class="band-cap reveal"><div class="k">未来会发生什么 · The Future</div><div class="t">进门第一站，一面会生长的墙</div></div>
+    <div class="band-cap reveal"><div class="k">The Future · 未来</div><div class="t">进门第一站，一面会生长的墙</div></div>
   </div>
   <div class="corner-after">
     <div class="wrap">
-      <p class="body reveal">这里会是所有来到 i.n.g 的人的第一站。门背后会有一个毛毡板——一面会不断变化、不断生长的【I.N.G 正在成为】之墙。以后来到这面墙的人，都可以用一些互动的方式，把自己当下的状态、未来选择成为的自己放在这面墙上。</p>
+      <details class="fold reveal"><summary>未来这里会发生什么？<span class="plus">＋</span></summary><div class="fb"><p>这里会是所有来到 i.n.g 的人的第一站。门背后会有一个毛毡板——一面会不断变化、不断生长的【I.N.G 正在成为】之墙。以后来到这面墙的人，都可以用一些互动的方式，把自己当下的状态、未来选择成为的自己放在这面墙上。</p></div></details>
       <span class="qlabel reveal">我们可以一起创造什么？</span>
       <ul class="chips reveal">
         <li>I.N.G 墙的名称</li>
@@ -281,7 +274,7 @@
 <!-- ================= CORNER 02 ================= -->
 <section class="corner c-enjoy" id="enjoy">
   <div class="cover" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/enjoy.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/enjoy.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
     <div class="cover-inner">
       <span class="c-num reveal">02 · I AM ENJOYING NOW</span>
@@ -293,21 +286,18 @@
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
       <p class="lead reveal">我是一个时常在思考活着的意义是什么的人，我会为自己画一个大大圆圆美好的未来的饼，然后屁颠屁颠的紧盯着自己以为的美好目标冲冲冲。但我有时候走到那个饼面前发现原来只是一个泡泡没意思，有时候会在一片迷雾里看不到未来的希望，有时候会觉得好多事情无意义，觉得迷茫又无趣。</p>
-      <details class="more reveal">
-        <summary>读完整的故事</summary>
-        <p class="body">当我直面这荒谬无意义的世界，不再欺骗自己，不再活在未来的泡泡里，我意识到与其期待未来的不知多久到来的幻影，不如珍惜当下正在发生的美好。于是我开始学习前行的路上收集生活里的小确幸——那些确幸的时刻是聊天时的开怀大笑，是看见春天路边花开时的喜悦，是吃到家里酸辣可口美食的满足，是被人紧紧拥抱和呵护宠爱着的幸福，是无所事事脑袋空空在沙滩上看着日落绚烂，然后感叹一句"生活可真美好"的无数个点点滴滴的小瞬间。</p>
-        <p class="body">所以我想要在家里最显眼的角落把最绚烂的日落搬回家，让每个看到 I.N.G 日落的人，长长舒一口气说，生活真美好。</p>
-      </details>
+      <p class="body reveal">当我直面这荒谬无意义的世界，不再欺骗自己，不再活在未来的泡泡里，我意识到与其期待未来的不知多久到来的幻影，不如珍惜当下正在发生的美好。于是我开始学习前行的路上收集生活里的小确幸——那些确幸的时刻是聊天时的开怀大笑，是看见春天路边花开时的喜悦，是吃到家里酸辣可口美食的满足，是被人紧紧拥抱和呵护宠爱着的幸福，是无所事事脑袋空空在沙滩上看着日落绚烂，然后感叹一句"生活可真美好"的无数个点点滴滴的小瞬间。</p>
+      <p class="body reveal">所以我想要在家里最显眼的角落把最绚烂的日落搬回家，让每个看到 I.N.G 日落的人，长长舒一口气说，生活真美好。</p>
     </div>
   </div>
   <div class="band" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/enjoy_f.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/enjoy_f.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
-    <div class="band-cap reveal"><div class="k">未来会发生什么 · The Future</div><div class="t">客厅正中央，一片专属落日</div></div>
+    <div class="band-cap reveal"><div class="k">The Future · 未来</div><div class="t">客厅正中央，一片专属落日</div></div>
   </div>
   <div class="corner-after">
     <div class="wrap">
-      <p class="body reveal">这里会是进家之后看到的最显眼的位置。在客厅的正中央，会用星星灯和丝巾打造一个专属 I.N.G 的落日。在这个美好的落日下，更多的美好温馨时刻创造 ING。</p>
+      <details class="fold reveal"><summary>未来这里会发生什么？<span class="plus">＋</span></summary><div class="fb"><p>这里会是进家之后看到的最显眼的位置。在客厅的正中央，会用星星灯和丝巾打造一个专属 I.N.G 的落日。在这个美好的落日下，更多的美好温馨时刻创造 ING。</p></div></details>
       <span class="qlabel reveal">我们可以一起创造什么？</span>
       <ul class="chips reveal">
         <li>I.N.G 落日的设计和布置</li>
@@ -321,7 +311,7 @@
 <!-- ================= CORNER 03 ================= -->
 <section class="corner c-glow" id="glow">
   <div class="cover" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/glow.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/glow.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
     <div class="cover-inner">
       <span class="c-num reveal">03 · I AM GLOWING</span>
@@ -333,22 +323,19 @@
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
       <p class="lead reveal">我为自己写下的墓志铭是【她曾精彩的绽放过】。我希望我的人生如烟花般灿烂，即使短暂也要在升空的瞬间肆意绽放。我从不恐惧死亡，但我恐惧暗淡无光。</p>
-      <details class="more reveal">
-        <summary>读完整的故事</summary>
-        <p class="body">所以即使我知道世界荒诞，知道或许一切都是一场空，知道燃和焚本就共生，我也仍然想要选择满怀激情的人生——在活着的一秒，肆意绽放属于我的光芒，给予这个世界我的热烈。</p>
-        <p class="body">在过去的一年，我遇见了好多可爱又宝藏的人儿，她们在我的天空都留下了一束束绚丽耀眼的光芒。我看到她们有很多奇思妙想，有自己的内心坚持和理想，正在试着走自己的路，在做自己热爱的事情的时候眼睛里在发光。然而不是所有人都看到了自己的光——或许会怀疑自己，会觉得自己没什么特别，觉得自己还不够厉害、还没准备好。可是我想告诉来到 I.N.G 的每一个人：你不需要成为谁才值得被看见，此时此刻的你正在发光。</p>
-        <p class="body">烟花会因自己绽放的光芒而开心，看到烟花的人也会因为这绚烂的色彩而兴奋。所以我想在 I.N.G 留下一片天空，给这些闪闪发光的可爱人们。未来站在这面墙前的人看见，原来有这么多人正在发出自己的光——然后有一天，她会觉得，我也可以。</p>
-      </details>
+      <p class="body reveal">所以即使我知道世界荒诞，知道或许一切都是一场空，知道燃和焚本就共生，我也仍然想要选择满怀激情的人生——在活着的一秒，肆意绽放属于我的光芒，给予这个世界我的热烈。</p>
+      <p class="body reveal">在过去的一年，我遇见了好多可爱又宝藏的人儿，她们在我的天空都留下了一束束绚丽耀眼的光芒。我看到她们有很多奇思妙想，有自己的内心坚持和理想，正在试着走自己的路，在做自己热爱的事情的时候眼睛里在发光。然而不是所有人都看到了自己的光——或许会怀疑自己，会觉得自己没什么特别，觉得自己还不够厉害、还没准备好。可是我想告诉来到 I.N.G 的每一个人：你不需要成为谁才值得被看见，此时此刻的你正在发光。</p>
+      <p class="body reveal">烟花会因自己绽放的光芒而开心，看到烟花的人也会因为这绚烂的色彩而兴奋。所以我想在 I.N.G 留下一片天空，给这些闪闪发光的可爱人们。未来站在这面墙前的人看见，原来有这么多人正在发出自己的光——然后有一天，她会觉得，我也可以。</p>
     </div>
   </div>
   <div class="band" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/glow_f.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/glow_f.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
-    <div class="band-cap reveal"><div class="k">未来会发生什么 · The Future</div><div class="t">最核心的一面墙，群星闪耀之地</div></div>
+    <div class="band-cap reveal"><div class="k">The Future · 未来</div><div class="t">最核心的一面墙，群星闪耀之地</div></div>
   </div>
   <div class="corner-after">
     <div class="wrap">
-      <p class="body reveal">这里会是 I.N.G 最最最核心的部分——群星闪耀的地方，一群志同道合的人聚拢在一起创造更多有趣事情的地方，未来 I.N.G 活动主理人的聚集地。通过这面烟花墙，我们可以一起挖宝藏，让每一位想要发光的人儿肆意绽放自己独一无二的光芒。</p>
+      <details class="fold reveal"><summary>未来这里会发生什么？<span class="plus">＋</span></summary><div class="fb"><p>这里会是 I.N.G 最最最核心的部分——群星闪耀的地方，一群志同道合的人聚拢在一起创造更多有趣事情的地方，未来 I.N.G 活动主理人的聚集地。通过这面烟花墙，我们可以一起挖宝藏，让每一位想要发光的人儿肆意绽放自己独一无二的光芒。</p></div></details>
       <span class="qlabel reveal">我们可以一起创造什么？</span>
       <ul class="chips reveal">
         <li>I.N.G 独一无二的烟花墙，让宝藏们的光芒尽情绽放</li>
@@ -363,7 +350,7 @@
 <!-- ================= CORNER 04 ================= -->
 <section class="corner c-moveon" id="moveon">
   <div class="cover" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/moveon.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/moveon.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
     <div class="cover-inner">
       <span class="c-num reveal">04 · I AM MOVING ON</span>
@@ -375,21 +362,18 @@
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
       <p class="lead reveal">我是个脑子时刻在转、有好多乱七八糟想法冒出来的人。有些念头很小："我想晒一天太阳"；有些念头别人听了觉得奇怪："我想去流浪"；有些念头很不切实际："我想建一个游乐园"。聊到每一个想法时我都会很激动、眼睛闪闪发光——但好多想法还没来得及发生，就会有另外一个声音出现：你真的做得到吗？然后这些奇思妙想就会被放下。</p>
-      <details class="more reveal">
-        <summary>读完整的故事</summary>
-        <p class="body">创办一个有趣的空间，大概是我六七年前就一直盘旋在脑子里的事情。但之前我一直给自己说：时机不对，没准备好，好难，不知道从哪里开始。但这次我给自己说：没关系，来让我试试看，人生不就是体验，活着不就是得折腾。</p>
-        <p class="body">所以我想给奇思妙想们准备一个家——把大家在脑海里盘旋想试试、很好奇、不知道怎么样的想法，不如在 I.N.G 试试看！让这些奇思妙想被看见，被认真对待，被实现。I.N.G 是正在进行时：不是过去完成时，不需要你完成所有准备；也不是将来时，不需要等待未来某一天。如果想试试，不如就现在，give it a try。</p>
-      </details>
+      <p class="body reveal">创办一个有趣的空间，大概是我六七年前就一直盘旋在脑子里的事情。但之前我一直给自己说：时机不对，没准备好，好难，不知道从哪里开始。但这次我给自己说：没关系，来让我试试看，人生不就是体验，活着不就是得折腾。</p>
+      <p class="body reveal">所以我想给奇思妙想们准备一个家——把大家在脑海里盘旋想试试、很好奇、不知道怎么样的想法，不如在 I.N.G 试试看！让这些奇思妙想被看见，被认真对待，被实现。I.N.G 是正在进行时：不是过去完成时，不需要你完成所有准备；也不是将来时，不需要等待未来某一天。如果想试试，不如就现在，give it a try。</p>
     </div>
   </div>
   <div class="band" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/moveon_f.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/moveon_f.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
-    <div class="band-cap reveal"><div class="k">未来会发生什么 · The Future</div><div class="t">楼梯两侧，奇思妙想发生之路</div></div>
+    <div class="band-cap reveal"><div class="k">The Future · 未来</div><div class="t">楼梯两侧，奇思妙想发生之路</div></div>
   </div>
   <div class="corner-after">
     <div class="wrap">
-      <p class="body reveal">楼梯两边的墙面会变成奇思妙想正在发生的路径，每个想法会经历三个阶段：<strong>奇思妙想墙</strong>——记录下想试试的念头，当它被认真对待，就有实现可能性；<strong>正在发生墙</strong>——敲锣打鼓宣传哪些事情已经开始，快来加入呀；<strong>奇迹墙</strong>——大声骄傲地向所有人宣布：你看！I WANT IT, SO I GOT IT。</p>
+      <details class="fold reveal"><summary>未来这里会发生什么？<span class="plus">＋</span></summary><div class="fb"><p>楼梯两边的墙面会变成奇思妙想正在发生的路径，每个想法会经历三个阶段：奇思妙想墙——记录下想试试的念头，当它被认真对待，就有实现可能性；正在发生墙——敲锣打鼓宣传哪些事情已经开始，快来加入呀；奇迹墙——大声骄傲地向所有人宣布：你看！I WANT IT, SO I GOT IT。</p></div></details>
       <span class="qlabel reveal">我们可以一起创造什么？</span>
       <ul class="chips reveal">
         <li>奇思妙想正在发生之路的设计和展示</li>
@@ -404,7 +388,7 @@
 <!-- ================= CORNER 05 ================= -->
 <section class="corner c-memory" id="memory">
   <div class="cover" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/memory.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/memory.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
     <div class="cover-inner">
       <span class="c-num reveal">05 · I AM REMEMBERING</span>
@@ -416,21 +400,18 @@
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
       <p class="lead reveal">我是一个很喜欢收藏自己的美好记忆、并把它们放在生活中最显眼位置的人。可能是一张出发的票根，一张笑出牙龈的拍立得，一个和朋友一起还未完成的半成品。它们本身不一定贵重，但我一看到，就会突然想起那一天、那个人，想起当时我们笑得有多大声。</p>
-      <details class="more reveal">
-        <summary>读完整的故事</summary>
-        <p class="body">我一直觉得，记忆如果只躺在手机相册和聊天记录里，好像很容易被新的消息、新的照片一点点盖过去。但有些时刻我舍不得它消失。特别是这个窝开始之后，这里一定会发生很多很多第一次：第一次有人来搭窝，第一次有人在这里分享自己的故事，第一次有人在这里哭，第一次有人大笑到停不下来，第一次有人说"我也想试试"。</p>
-        <p class="body">所以我想给这些美好记忆准备一个可以住下来的地方。它不需要很宏大，也不需要很正式——它就像一个小小的博物馆，认真收藏那些证明我们真的来过、真的一起经历过、真的在这里留下过痕迹的东西。</p>
-      </details>
+      <p class="body reveal">我一直觉得，记忆如果只躺在手机相册和聊天记录里，好像很容易被新的消息、新的照片一点点盖过去。但有些时刻我舍不得它消失。特别是这个窝开始之后，这里一定会发生很多很多第一次：第一次有人来搭窝，第一次有人在这里分享自己的故事，第一次有人在这里哭，第一次有人大笑到停不下来，第一次有人说"我也想试试"。</p>
+      <p class="body reveal">所以我想给这些美好记忆准备一个可以住下来的地方。它不需要很宏大，也不需要很正式——它就像一个小小的博物馆，认真收藏那些证明我们真的来过、真的一起经历过、真的在这里留下过痕迹的东西。</p>
     </div>
   </div>
   <div class="band" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/memory_f.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/memory_f.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
-    <div class="band-cap reveal"><div class="k">未来会发生什么 · The Future</div><div class="t">一个小橱窗，记忆住下来的地方</div></div>
+    <div class="band-cap reveal"><div class="k">The Future · 未来</div><div class="t">一个小橱窗，记忆住下来的地方</div></div>
   </div>
   <div class="corner-after">
     <div class="wrap">
-      <p class="body reveal">每一次活动之后、每一次共创之后、每一个重要的小瞬间，都可以留下一件小小的展品——票根、合照、手写卡片、扭蛋壳、书签、干花。每一件东西旁边都会有一张小标签：它是什么，谁留下的，为什么被放在这里。未来有人站在这个橱窗前，会看到 I.N.G 是有很多人、很多夜晚、很多笑声和很多心动慢慢堆起来的地方。</p>
+      <details class="fold reveal"><summary>未来这里会发生什么？<span class="plus">＋</span></summary><div class="fb"><p>每一次活动之后、每一次共创之后、每一个重要的小瞬间，都可以留下一件小小的展品——票根、合照、手写卡片、扭蛋壳、书签、干花。每一件东西旁边都会有一张小标签：它是什么，谁留下的，为什么被放在这里。未来有人站在这个橱窗前，会看到 I.N.G 是有很多人、很多夜晚、很多笑声和很多心动慢慢堆起来的地方。</p></div></details>
       <span class="qlabel reveal">我们可以一起创造什么？</span>
       <ul class="chips reveal">
         <li>记忆博物馆的第一版主题和展示方式</li>
@@ -445,7 +426,7 @@
 <!-- ================= CORNER 06 ================= -->
 <section class="corner c-sharing" id="sharing">
   <div class="cover" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/sharing.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/sharing.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
     <div class="cover-inner">
       <span class="c-num reveal">06 · I AM SHARING</span>
@@ -457,21 +438,18 @@
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
       <p class="lead reveal">我很喜欢给大家准备礼物，也很喜欢收到礼物。一份礼物承载着我的美好记忆，和我无声的挂念。而当这份礼物和挂念被分享出去时，就变成两个人心里都有的东西。</p>
-      <details class="more reveal">
-        <summary>读完整的故事</summary>
-        <p class="body">我也很喜欢收到礼物和美好——因为它们不仅是一个物件，那是生活不期而遇的小确幸，是来自身边的人和世界的爱，是被宠着和呵护着的实证。我很想把这份美好和小确幸分享给大家，让来到 I.N.G 的人不只是带走一个活动体验，而是真的带走一点来自另一个人的温柔。让美好的光，亮点燃更多的光。</p>
-        <p class="body">所以我想做一个分享美好柜。你可以带来一个曾经温暖过你的小东西，写下它的故事，把它留在这里；也可以从这里带走一个来自陌生人或朋友的心意。它不是交换礼物这么简单——它更像是让美好在不同人的生命里继续流动。</p>
-      </details>
+      <p class="body reveal">我也很喜欢收到礼物和美好——因为它们不仅是一个物件，那是生活不期而遇的小确幸，是来自身边的人和世界的爱，是被宠着和呵护着的实证。我很想把这份美好和小确幸分享给大家，让来到 I.N.G 的人不只是带走一个活动体验，而是真的带走一点来自另一个人的温柔。让美好的光，亮点燃更多的光。</p>
+      <p class="body reveal">所以我想做一个分享美好柜。你可以带来一个曾经温暖过你的小东西，写下它的故事，把它留在这里；也可以从这里带走一个来自陌生人或朋友的心意。它不是交换礼物这么简单——它更像是让美好在不同人的生命里继续流动。</p>
     </div>
   </div>
   <div class="band" data-px>
-    <div class="px"><div class="px-bg" style="background-image:url(img/sharing_f.jpg)"></div></div>
+    <div class="px"><img class="px-bg" src="img/sharing_f.webp" alt="" loading="lazy" decoding="async"></div>
     <div class="tint"></div>
-    <div class="band-cap reveal"><div class="k">未来会发生什么 · The Future</div><div class="t">最容易制造惊喜的一个角落</div></div>
+    <div class="band-cap reveal"><div class="k">The Future · 未来</div><div class="t">最容易制造惊喜的一个角落</div></div>
   </div>
   <div class="corner-after">
     <div class="wrap">
-      <p class="body reveal">也许会有一个扭蛋机，也许会有很多编号的小盒子，里面装着不同人留下的礼物和故事。每个人可以带来 1-2 个美好——一本小书、一张卡片、一包好喝的茶、一句很喜欢的话。来到这里的人扭开一颗蛋，抽到一个编号，打开一个未知的小礼物。她带走的不只是东西，还有上一个人留下的那句话。</p>
+      <details class="fold reveal"><summary>未来这里会发生什么？<span class="plus">＋</span></summary><div class="fb"><p>也许会有一个扭蛋机，也许会有很多编号的小盒子，里面装着不同人留下的礼物和故事。每个人可以带来 1-2 个美好——一本小书、一张卡片、一包好喝的茶、一句很喜欢的话。来到这里的人扭开一颗蛋，抽到一个编号，打开一个未知的小礼物。她带走的不只是东西，还有上一个人留下的那句话。</p></div></details>
       <span class="qlabel reveal">我们可以一起创造什么？</span>
       <ul class="chips reveal">
         <li>分享美好柜和扭蛋玩法的设计</li>
@@ -485,10 +463,10 @@
 
 <!-- ================= FINALE ================= -->
 <section class="finale" data-px>
-  <div class="px"><div class="px-bg" style="background-image:url(img/invite.jpg)"></div></div>
+  <div class="px"><img class="px-bg" src="img/invite.webp" alt="" loading="lazy" decoding="async"></div>
   <div class="tint"></div>
   <div class="wrap">
-    <div class="kicker reveal" style="color:#F2CFA0">The First Build</div>
+    <div class="kicker reveal" style="color:#EDCB98">The First Build</div>
     <h2 class="reveal">和我一起<br>搭一个窝么~</h2>
     <p class="reveal">这六个角落，都还没有长成最终的模样。<br>如果哪一个让你心动了——它可能就在等你。</p>
     <div class="glow-line reveal">I AM GLOWING NOW</div>
@@ -500,20 +478,17 @@
 <script>
   const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-  /* scroll progress */
   const bar = document.getElementById('bar');
   addEventListener('scroll', () => {
     const h = document.documentElement;
     bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
   }, {passive:true});
 
-  /* reveal on scroll */
   const io = new IntersectionObserver((es) => {
     for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }, {threshold:.14, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
-  /* parallax backgrounds */
   if (!reduce) {
     const secs = [...document.querySelectorAll('[data-px]')];
     let ticking = false;
@@ -522,9 +497,9 @@
       for (const s of secs){
         const bg = s.querySelector('.px-bg'); if(!bg) continue;
         const r = s.getBoundingClientRect();
-        if (r.bottom < -120 || r.top > vh + 120) continue;
+        if (r.bottom < -140 || r.top > vh + 140) continue;
         const prog = (r.top + r.height/2 - vh/2) / vh;
-        bg.style.transform = 'translate3d(0,' + (prog * -50) + 'px,0)';
+        bg.style.transform = 'translate3d(0,' + (prog * -48) + 'px,0)';
       }
       ticking = false;
     }
@@ -533,28 +508,27 @@
     parallax();
   }
 
-  /* ambient warm light motes */
   if (!reduce) {
     const cv = document.getElementById('motes'), cx = cv.getContext('2d');
     let W, H, motes;
     function init(){
       W = cv.width = innerWidth; H = cv.height = innerHeight;
-      const n = Math.round(Math.min(30, innerWidth / 18));
+      const n = Math.round(Math.min(28, innerWidth / 20));
       motes = Array.from({length:n}, () => ({
         x: Math.random()*W, y: Math.random()*H,
-        r: 1 + Math.random()*3.2, s: .12 + Math.random()*.38,
-        d: Math.random()*Math.PI*2, a: .10 + Math.random()*.28
+        r: 1 + Math.random()*3, s: .1 + Math.random()*.34,
+        d: Math.random()*Math.PI*2, a: .08 + Math.random()*.24
       }));
     }
     function draw(){
       cx.clearRect(0,0,W,H);
       for (const m of motes){
-        m.y -= m.s; m.x += Math.sin(m.d)*.22; m.d += .01;
+        m.y -= m.s; m.x += Math.sin(m.d)*.2; m.d += .01;
         if (m.y < -12){ m.y = H+12; m.x = Math.random()*W; }
         const R = m.r*3.2;
         const g = cx.createRadialGradient(m.x,m.y,0,m.x,m.y,R);
-        g.addColorStop(0,'rgba(255,234,196,'+m.a+')');
-        g.addColorStop(1,'rgba(255,234,196,0)');
+        g.addColorStop(0,'rgba(240,214,164,'+m.a+')');
+        g.addColorStop(1,'rgba(240,214,164,0)');
         cx.fillStyle = g; cx.beginPath(); cx.arc(m.x,m.y,R,0,6.29); cx.fill();
       }
       requestAnimationFrame(draw);
