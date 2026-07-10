@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>搭窝 i.n.g. — 一个正在发生的窝</title>
+<meta name="description" content="I.N.G，一个有归属感、有生命力的窝。六个正在发生的角落，邀请你一起搭建和创造。">
+<link rel="preconnect" href="https://fonts.loli.net" crossorigin>
+<link href="https://fonts.loli.net/css2?family=Ma+Shan+Zheng&display=swap" rel="stylesheet">
+<link href="https://cdn.jsdelivr.net/npm/lxgw-wenkai-webfont@1.7.0/style.css" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FAF3E7;
+    --paper-deep:#F3E7D3;
+    --ink:#3B2A1E;
+    --ink-soft:#6B5442;
+    --amber:#C98A4B;
+    --amber-deep:#A96F33;
+    --becoming:#55703F;
+    --enjoy:#C96F4A;
+    --glow:#B6832E;
+    --moveon:#41628A;
+    --memory:#8A5E4B;
+    --sharing:#B5657D;
+    --serif-en:Georgia,'Times New Roman',serif;
+    --kai:'LXGW WenKai','Kaiti SC','STKaiti',KaiTi,'LXGW WenKai TC',serif;
+    --brush:'Ma Shan Zheng','LXGW WenKai','Kaiti SC','STKaiti',KaiTi,serif;
+  }
+  *{margin:0;padding:0;box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .reveal{opacity:1 !important;transform:none !important;transition:none !important}
+  }
+  body{
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--kai);
+    font-size:17px;
+    line-height:1.9;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--amber);color:#fff}
+
+  /* ---------- progress bar ---------- */
+  #bar{position:fixed;top:0;left:0;height:3px;width:0;background:var(--amber);z-index:99;transition:width .1s linear}
+
+  /* ---------- shared ---------- */
+  .wrap{max-width:680px;margin:0 auto;padding:0 24px}
+  .kicker{
+    font-family:var(--serif-en);
+    font-style:italic;
+    font-size:13px;
+    letter-spacing:.18em;
+    color:var(--amber-deep);
+    text-transform:uppercase;
+  }
+  .reveal{opacity:0;transform:translateY(26px);transition:opacity .8s ease,transform .8s ease}
+  .reveal.in{opacity:1;transform:none}
+
+  h2{
+    font-family:var(--brush);
+    font-weight:400;
+    font-size:clamp(34px,7vw,50px);
+    line-height:1.3;
+    margin:.35em 0 .5em;
+    text-wrap:balance;
+  }
+  .pull{
+    font-size:clamp(19px,3.6vw,23px);
+    line-height:1.75;
+    font-weight:700;
+    text-wrap:balance;
+  }
+  p.body{margin-bottom:1.2em;color:var(--ink-soft)}
+  p.body strong{color:var(--ink)}
+
+  /* ---------- hero ---------- */
+  header{
+    position:relative;
+    min-height:100svh;
+    display:flex;
+    flex-direction:column;
+    justify-content:flex-end;
+    color:#FFF6EA;
+    isolation:isolate;
+  }
+  header .bg{
+    position:absolute;inset:0;z-index:-2;
+    background:url(img/hero.jpg) center 30%/cover no-repeat;
+  }
+  header .tint{
+    position:absolute;inset:0;z-index:-1;
+    background:linear-gradient(180deg,rgba(43,30,24,.28) 0%,rgba(43,30,24,.12) 40%,rgba(43,30,24,.72) 100%);
+  }
+  .hero-inner{padding:0 24px 9svh;max-width:680px;margin:0 auto;width:100%}
+  .hero-kicker{
+    font-family:var(--serif-en);font-style:italic;font-size:14px;
+    letter-spacing:.28em;color:#F2CFA0;text-transform:uppercase;
+  }
+  h1{
+    font-family:var(--brush);
+    font-weight:400;
+    font-size:clamp(58px,15vw,110px);
+    line-height:1.15;
+    margin:.15em 0 .1em;
+  }
+  h1 .ing{color:#F2B26B}
+  .hero-line{
+    font-size:clamp(17px,3.4vw,20px);
+    max-width:30em;
+    color:#F6E7D2;
+    text-shadow:0 1px 12px rgba(43,30,24,.5);
+  }
+  .scroll-hint{
+    margin-top:5vh;
+    font-family:var(--serif-en);font-style:italic;
+    font-size:12px;letter-spacing:.2em;color:#E9CFA8;
+  }
+  .scroll-hint::after{content:"↓";display:block;font-size:18px;margin-top:6px;animation:bob 2.2s ease-in-out infinite}
+  @keyframes bob{0%,100%{transform:translateY(0)}50%{transform:translateY(7px)}}
+  @media (prefers-reduced-motion:reduce){.scroll-hint::after{animation:none}}
+
+  /* ---------- manifesto : the name ---------- */
+  .manifesto{padding:14vh 0 10vh}
+  .tenses{margin:3em 0;display:flex;flex-direction:column;gap:1.6em}
+  .tense{
+    border-left:3px solid var(--paper-deep);
+    padding-left:1.2em;
+  }
+  .tense b{
+    display:block;font-size:15px;letter-spacing:.1em;color:var(--amber-deep);margin-bottom:.3em;
+    font-family:var(--serif-en);font-style:italic;
+  }
+  .tense p{color:var(--ink-soft);font-size:16px}
+
+  .ing-cards{display:flex;flex-direction:column;gap:14px;margin:3em 0 2em}
+  .ing-card{
+    background:#fff;
+    border-radius:14px;
+    padding:20px 24px;
+    box-shadow:0 2px 14px rgba(59,42,30,.07);
+    display:flex;align-items:baseline;gap:18px;
+  }
+  .ing-card .letter{
+    font-family:var(--serif-en);font-size:38px;font-weight:700;color:var(--amber);
+    line-height:1;min-width:34px;text-align:center;
+  }
+  .ing-card .en{font-family:var(--serif-en);font-style:italic;font-size:13px;color:var(--ink-soft);display:block}
+  .glow-line{
+    font-family:var(--serif-en);font-style:italic;font-weight:700;
+    font-size:clamp(22px,5vw,30px);letter-spacing:.06em;color:var(--amber-deep);
+    text-align:center;margin:1.6em 0 0;
+  }
+
+  /* ---------- why the nest ---------- */
+  .why-nest{
+    position:relative;color:#FFF6EA;isolation:isolate;
+    padding:16vh 0;
+  }
+  .why-nest .bg{position:absolute;inset:0;z-index:-2;background:url(img/story.jpg) center/cover no-repeat}
+  .why-nest .tint{position:absolute;inset:0;z-index:-1;background:rgba(43,30,24,.66)}
+  .why-nest .pull{color:#FFE9C9}
+  .why-nest p.body{color:#F0DFC8}
+  .why-nest .kicker{color:#F2CFA0}
+
+  /* ---------- corners intro strip ---------- */
+  .corners-intro{padding:12vh 0 4vh;text-align:center}
+  .corners-intro h2{margin-bottom:.3em}
+  .corners-intro p{color:var(--ink-soft);max-width:32em;margin:0 auto}
+
+  /* ---------- corner section ---------- */
+  .corner{padding:10vh 0}
+  .corner .wrap{max-width:960px}
+  .corner-grid{
+    display:grid;grid-template-columns:minmax(0,420px) minmax(0,1fr);
+    gap:clamp(28px,5vw,64px);align-items:start;
+  }
+  .corner:nth-of-type(even) .corner-grid{grid-template-columns:minmax(0,1fr) minmax(0,420px)}
+  .corner:nth-of-type(even) .photo-col{order:2}
+  @media (max-width:820px){
+    .corner-grid, .corner:nth-of-type(even) .corner-grid{grid-template-columns:1fr}
+    .corner:nth-of-type(even) .photo-col{order:0}
+  }
+  .photo-col{position:sticky;top:6vh}
+  @media (max-width:820px){.photo-col{position:static}}
+  .polaroid{
+    background:#fff;padding:12px 12px 46px;
+    border-radius:4px;
+    box-shadow:0 10px 30px rgba(59,42,30,.16);
+    transform:rotate(-1.6deg);
+    position:relative;
+  }
+  .corner:nth-of-type(even) .polaroid{transform:rotate(1.4deg)}
+  .polaroid img{width:100%;display:block;border-radius:2px;aspect-ratio:9/13;object-fit:cover}
+  .polaroid figcaption{
+    position:absolute;bottom:12px;left:0;right:0;text-align:center;
+    font-size:14px;color:var(--ink-soft);
+  }
+  .corner .num{
+    font-family:var(--serif-en);font-size:15px;font-weight:700;letter-spacing:.14em;
+  }
+  .corner h2{margin-top:.15em}
+  .corner .pull{margin-bottom:1.4em}
+  .qlabel{
+    display:inline-block;font-weight:700;font-size:15px;letter-spacing:.06em;
+    margin:1.8em 0 .7em;padding:3px 14px;border-radius:999px;
+    background:var(--paper-deep);color:var(--ink);
+  }
+  details.more{margin:-0.4em 0 1.2em}
+  details.more summary{
+    cursor:pointer;list-style:none;display:inline-block;
+    font-size:14px;color:var(--amber-deep);
+    border-bottom:1px dashed var(--amber);
+    padding-bottom:1px;
+  }
+  details.more summary::-webkit-details-marker{display:none}
+  details.more summary::after{content:" ↓"}
+  details.more[open] summary::after{content:" ↑"}
+  details.more[open] summary{margin-bottom:.8em}
+  .chips{list-style:none;display:flex;flex-direction:column;gap:9px;margin:.2em 0 1.4em}
+  .chips li{
+    font-size:15.5px;color:var(--ink-soft);
+    padding-left:1.4em;position:relative;
+  }
+  .chips li::before{
+    content:"—";position:absolute;left:0;font-weight:700;
+  }
+  .closing{
+    font-weight:700;font-style:italic;
+    padding:1em 0 0;border-top:1px dashed rgba(59,42,30,.2);
+  }
+
+  /* per-corner hue */
+  .c-becoming{--hue:var(--becoming)} .c-enjoy{--hue:var(--enjoy)}
+  .c-glow{--hue:var(--glow)} .c-moveon{--hue:var(--moveon)}
+  .c-memory{--hue:var(--memory)} .c-sharing{--hue:var(--sharing)}
+  .corner .num, .corner .kicker{color:var(--hue)}
+  .corner .pull{color:var(--hue)}
+  .corner .chips li::before{color:var(--hue)}
+  .corner .closing{color:var(--hue)}
+  .corner{background:linear-gradient(180deg,transparent,rgba(59,42,30,.03) 50%,transparent)}
+
+  /* ---------- finale ---------- */
+  .finale{
+    position:relative;color:#FFF6EA;isolation:isolate;
+    padding:18vh 0 14vh;text-align:center;
+  }
+  .finale .bg{position:absolute;inset:0;z-index:-2;background:url(img/invite.jpg) center/cover no-repeat}
+  .finale .tint{position:absolute;inset:0;z-index:-1;background:rgba(52,32,38,.62)}
+  .finale h2{font-size:clamp(36px,8vw,58px)}
+  .finale p{max-width:26em;margin:0 auto 1.2em;color:#F6E3D4}
+  .finale .glow-line{color:#F2B26B}
+  footer{
+    padding:34px 24px;text-align:center;
+    font-family:var(--serif-en);font-style:italic;
+    font-size:12px;letter-spacing:.16em;color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+<div id="bar"></div>
+
+<!-- ================= HERO ================= -->
+<header>
+  <div class="bg"></div><div class="tint"></div>
+  <div class="hero-inner">
+    <div class="hero-kicker">Invitation · A Nest in Progress</div>
+    <h1>搭窝 <span class="ing">i.n.g.</span></h1>
+    <p class="hero-line">一个有很多有趣事情发生、不会让人无聊的地方；一个有归属感、有生命力的地方；一个路过了，累了，想景怡了，不需要任何理由就想去坐坐的地方。</p>
+    <div class="scroll-hint">walk in</div>
+  </div>
+</header>
+
+<!-- ================= NAME STORY ================= -->
+<section class="manifesto">
+  <div class="wrap">
+    <div class="kicker reveal">开篇手记 · How I Named This Nest</div>
+    <h2 class="reveal">关于「ing」的名字</h2>
+    <p class="body reveal">我的窝要叫什么名字，要大声向世界喊出的那句话是什么？这个问题从年初我开始考虑做一个自己的空间时，我就一直被卡住想不清楚。但！有一天有人问我现在在干嘛，最近咋样呀，我脑子冒出一个词叫 ing——摸鱼ing，思索ing，迷茫ing，绽放ing，享受ing，写自己的窝策划案ing。</p>
+    <p class="pull reveal">欸嘿！我喜欢 [ing] 这个状态：是正在进行，是此时此刻，是持续迈步前行，是蓬勃的生命力，是无限可能性。</p>
+
+    <div class="tenses">
+      <div class="tense reveal">
+        <b>It's not past tense</b>
+        <p>它不是过去式——不需要你已经做了什么才可以做什么，不需要你已经成为谁才有资格做什么。现在我想成为什么、我想做什么，我就可以做什么。</p>
+      </div>
+      <div class="tense reveal">
+        <b>It's not future tense</b>
+        <p>它不是将来时——不需要等到什么时候，不需要如果未来有一天。此时此刻，就是最好的时刻。</p>
+      </div>
+      <div class="tense reveal">
+        <b>It's not perfect tense</b>
+        <p>它也不是完成时——不需要完全想清楚，不需要完美状态。想试试就开始试试，一直试试。</p>
+      </div>
+    </div>
+
+    <div class="ing-cards">
+      <div class="ing-card reveal">
+        <span class="letter">I</span>
+        <div>是我，我正在成为我自己<span class="en">I am Becoming Myself</span></div>
+      </div>
+      <div class="ing-card reveal">
+        <span class="letter">N</span>
+        <div>是现在 Now，我正在享受现在<span class="en">I am Enjoying Now</span></div>
+      </div>
+      <div class="ing-card reveal">
+        <span class="letter">G</span>
+        <div>是发光 Glow，我正在发光<span class="en">I am Glowing</span></div>
+      </div>
+    </div>
+    <div class="glow-line reveal">I AM GLOWING NOW !!!!</div>
+  </div>
+</section>
+
+<!-- ================= WHY THE NEST ================= -->
+<section class="why-nest">
+  <div class="bg"></div><div class="tint"></div>
+  <div class="wrap">
+    <div class="kicker reveal">Why This Nest Exists</div>
+    <h2 class="reveal">我理想的这个窝，<br>不是一个睡觉的地方，<br>而是一个能让我满血复活的地方。</h2>
+    <p class="body reveal">我很认真的问了自己，什么时刻我感受到幸福和爱。然后我回想起每次我站在我的照片墙面前，看见我爱的、爱我的人在我生命中的痕迹，想起我们过往共同经历的事件，会有一股暖流充斥在我的内心。</p>
+    <p class="body reveal">我一直知道我害怕孤独，所以我希望有很多爱和美好和陪伴塞满我的世界。</p>
+    <p class="pull reveal">所以，或许你想要在 ING 留下你的痕迹和我们的共同回忆，和我一起搭一个窝么~</p>
+  </div>
+</section>
+
+<!-- ================= CORNERS INTRO ================= -->
+<section class="corners-intro">
+  <div class="wrap">
+    <div class="kicker reveal">Six Corners in Progress</div>
+    <h2 class="reveal">六个正在发生的角落</h2>
+    <p class="reveal">每个角落都还没有长成最终的模样——它们在等和它频率相同的人，一起把它想清楚、做出来。</p>
+  </div>
+</section>
+
+<!-- ================= CORNER 01 ================= -->
+<section class="corner c-becoming" id="becoming">
+  <div class="wrap">
+    <div class="corner-grid">
+      <div class="photo-col reveal">
+        <figure class="polaroid">
+          <img src="img/becoming.jpg" alt="阳光下的树叶" loading="lazy">
+          <figcaption>进门第一站 · 毛毡板之墙</figcaption>
+        </figure>
+      </div>
+      <div>
+        <span class="num reveal">01 · I AM BECOMING MYSELF</span>
+        <h2 class="reveal">正在成为自己</h2>
+        <p class="pull reveal">我们不是已经成为谁，而是正在成为谁。</p>
+
+        <span class="qlabel reveal">这个角落为什么存在？</span>
+        <p class="body reveal">在过去的一年，我一直试图在找自己，我是谁，我从哪里来，我要去哪里。我在找自己的来时路，找为什么成为了现在的自己。</p>
+        <details class="more reveal">
+          <summary>读完整的故事</summary>
+          <p class="body">但当有一天我脑海里面，一个积极乐观强大的我和一个懦弱无力退缩的我在疯狂争论吵架时，我在大脑里看着这两个我自己意识到：塑造我的不是过往的我，而是此时此刻的我，选择成为谁。我们不是已经成为谁，而是正在成为谁——这是我很喜欢 ING 这个词的原因之一。</p>
+          <p class="body">我想让每个来到这里的人，都可以在进入这扇门之后，留下一个此时此刻想要选择成为的自己：<strong>I am ______ING</strong></p>
+        </details>
+
+        <span class="qlabel reveal">未来会发生什么？</span>
+        <p class="body reveal">这里会是所有来到 i.n.g 的人的第一站。门背后会有一个毛毡板——一面会不断变化、不断生长的【I.N.G 正在成为】之墙。以后来到这面墙的人，都可以用一些互动的方式，把自己当下的状态、未来选择成为的自己放在这面墙上。</p>
+
+        <span class="qlabel reveal">我们可以一起创造什么？</span>
+        <ul class="chips reveal">
+          <li>I.N.G 墙的名称</li>
+          <li>怎么布置能够抓眼又有趣</li>
+          <li>有哪些有趣的互动方式，让大家愿意留下自己的状态</li>
+        </ul>
+        <p class="closing reveal">期待由你开启这个正在成为自己、记录当下的自己、更喜欢现在的自己的瞬间。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CORNER 02 ================= -->
+<section class="corner c-enjoy" id="enjoy">
+  <div class="wrap">
+    <div class="corner-grid">
+      <div class="photo-col reveal">
+        <figure class="polaroid">
+          <img src="img/enjoy.jpg" alt="绚烂的日落海面" loading="lazy">
+          <figcaption>客厅正中央 · 一片专属落日</figcaption>
+        </figure>
+      </div>
+      <div>
+        <span class="num reveal">02 · I AM ENJOYING NOW</span>
+        <h2 class="reveal">正在享受当下</h2>
+        <p class="pull reveal">长长舒一口气说：生活真美好。</p>
+
+        <span class="qlabel reveal">这个角落为什么存在？</span>
+        <p class="body reveal">我是一个时常在思考活着的意义是什么的人，我会为自己画一个大大圆圆美好的未来的饼，然后屁颠屁颠的紧盯着自己以为的美好目标冲冲冲。但我有时候走到那个饼面前发现原来只是一个泡泡没意思，有时候会在一片迷雾里看不到未来的希望，有时候会觉得好多事情无意义，觉得迷茫又无趣。</p>
+        <details class="more reveal">
+          <summary>读完整的故事</summary>
+          <p class="body">当我直面这荒谬无意义的世界，不再欺骗自己，不再活在未来的泡泡里，我意识到与其期待未来的不知多久到来的幻影，不如珍惜当下正在发生的美好。于是我开始学习前行的路上收集生活里的小确幸——那些确幸的时刻是聊天时的开怀大笑，是看见春天路边花开时的喜悦，是吃到家里酸辣可口美食的满足，是被人紧紧拥抱和呵护宠爱着的幸福，是无所事事脑袋空空在沙滩上看着日落绚烂，然后感叹一句"生活可真美好"的无数个点点滴滴的小瞬间。</p>
+          <p class="body">所以我想要在家里最显眼的角落把最绚烂的日落搬回家，让每个看到 I.N.G 日落的人，长长舒一口气说，生活真美好。</p>
+        </details>
+
+        <span class="qlabel reveal">未来会发生什么？</span>
+        <p class="body reveal">这里会是进家之后看到的最显眼的位置。在客厅的正中央，会用星星灯和丝巾打造一个专属 I.N.G 的落日。在这个美好的落日下，更多的美好温馨时刻创造 ING。</p>
+
+        <span class="qlabel reveal">我们可以一起创造什么？</span>
+        <ul class="chips reveal">
+          <li>I.N.G 落日的设计和布置</li>
+          <li>I.N.G 收藏的第一个美好瞬间</li>
+        </ul>
+        <p class="closing reveal">未来走进 I.N.G 的人，会因你打造的这片独属 ing 的落日，突然觉得生活真美好。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CORNER 03 ================= -->
+<section class="corner c-glow" id="glow">
+  <div class="wrap">
+    <div class="corner-grid">
+      <div class="photo-col reveal">
+        <figure class="polaroid">
+          <img src="img/glow.jpg" alt="烟花与照片钉在深色墙上" loading="lazy">
+          <figcaption>最核心的一面墙 · 群星闪耀之地</figcaption>
+        </figure>
+      </div>
+      <div>
+        <span class="num reveal">03 · I AM GLOWING</span>
+        <h2 class="reveal">正在发光</h2>
+        <p class="pull reveal">你不需要成为谁才值得被看见，此时此刻的你正在发光。</p>
+
+        <span class="qlabel reveal">这个角落为什么存在？</span>
+        <p class="body reveal">我为自己写下的墓志铭是【她曾精彩的绽放过】。我希望我的人生如烟花般灿烂，即使短暂也要在升空的瞬间肆意绽放。我从不恐惧死亡，但我恐惧暗淡无光。</p>
+        <details class="more reveal">
+          <summary>读完整的故事</summary>
+          <p class="body">所以即使我知道世界荒诞，知道或许一切都是一场空，知道燃和焚本就共生，我也仍然想要选择满怀激情的人生——在活着的一秒，肆意绽放属于我的光芒，给予这个世界我的热烈。</p>
+          <p class="body">在过去的一年，我遇见了好多可爱又宝藏的人儿，她们在我的天空都留下了一束束绚丽耀眼的光芒。我看到她们有很多奇思妙想，有自己的内心坚持和理想，正在试着走自己的路，在做自己热爱的事情的时候眼睛里在发光。然而不是所有人都看到了自己的光——或许会怀疑自己，会觉得自己没什么特别，觉得自己还不够厉害、还没准备好。可是我想告诉来到 I.N.G 的每一个人：你不需要成为谁才值得被看见，此时此刻的你正在发光。</p>
+          <p class="body">烟花会因自己绽放的光芒而开心，看到烟花的人也会因为这绚烂的色彩而兴奋。所以我想在 I.N.G 留下一片天空，给这些闪闪发光的可爱人们。未来站在这面墙前的人看见，原来有这么多人正在发出自己的光——然后有一天，她会觉得，我也可以。</p>
+        </details>
+
+        <span class="qlabel reveal">未来会发生什么？</span>
+        <p class="body reveal">这里会是 I.N.G 最最最核心的部分——群星闪耀的地方，一群志同道合的人聚拢在一起创造更多有趣事情的地方，未来 I.N.G 活动主理人的聚集地。通过这面烟花墙，我们可以一起挖宝藏，让每一位想要发光的人儿肆意绽放自己独一无二的光芒。</p>
+
+        <span class="qlabel reveal">我们可以一起创造什么？</span>
+        <ul class="chips reveal">
+          <li>I.N.G 独一无二的烟花墙，让宝藏们的光芒尽情绽放</li>
+          <li>怎么样去挖宝藏，去深入地了解、发现、展现每一束光</li>
+          <li>什么样的互动可以建立起这个空间的链接</li>
+        </ul>
+        <p class="closing reveal">每个人，都是一束不一样的烟花。我想邀请你一起，点亮这面墙上的第一束光。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CORNER 04 ================= -->
+<section class="corner c-moveon" id="moveon">
+  <div class="wrap">
+    <div class="corner-grid">
+      <div class="photo-col reveal">
+        <figure class="polaroid">
+          <img src="img/moveon.jpg" alt="通向山上的台阶" loading="lazy">
+          <figcaption>楼梯两侧 · 奇思妙想正在发生之路</figcaption>
+        </figure>
+      </div>
+      <div>
+        <span class="num reveal">04 · I AM MOVING ON</span>
+        <h2 class="reveal">正在发生</h2>
+        <p class="pull reveal">人生不就是体验，活着不就是得折腾。</p>
+
+        <span class="qlabel reveal">这个角落为什么存在？</span>
+        <p class="body reveal">我是个脑子时刻在转、有好多乱七八糟想法冒出来的人。有些念头很小："我想晒一天太阳"；有些念头别人听了觉得奇怪："我想去流浪"；有些念头很不切实际："我想建一个游乐园"。聊到每一个想法时我都会很激动、眼睛闪闪发光——但好多想法还没来得及发生，就会有另外一个声音出现：你真的做得到吗？然后这些奇思妙想就会被放下。</p>
+        <details class="more reveal">
+          <summary>读完整的故事</summary>
+          <p class="body">创办一个有趣的空间，大概是我六七年前就一直盘旋在脑子里的事情。但之前我一直给自己说：时机不对，没准备好，好难，不知道从哪里开始。但这次我给自己说：没关系，来让我试试看，人生不就是体验，活着不就是得折腾。</p>
+          <p class="body">所以我想给奇思妙想们准备一个家——把大家在脑海里盘旋想试试、很好奇、不知道怎么样的想法，不如在 I.N.G 试试看！让这些奇思妙想被看见，被认真对待，被实现。I.N.G 是正在进行时：不是过去完成时，不需要你完成所有准备；也不是将来时，不需要等待未来某一天。如果想试试，不如就现在，give it a try。</p>
+        </details>
+
+        <span class="qlabel reveal">未来会发生什么？</span>
+        <p class="body reveal">楼梯两边的墙面会变成奇思妙想正在发生的路径，每个想法会经历三个阶段：<strong>奇思妙想墙</strong>——记录下想试试的念头，当它被认真对待，就有实现可能性；<strong>正在发生墙</strong>——敲锣打鼓宣传哪些事情已经开始，快来加入呀；<strong>奇迹墙</strong>——大声骄傲地向所有人宣布：你看！I WANT IT, SO I GOT IT。</p>
+
+        <span class="qlabel reveal">我们可以一起创造什么？</span>
+        <ul class="chips reveal">
+          <li>奇思妙想正在发生之路的设计和展示</li>
+          <li>怎么样记录和展示这些奇思妙想们</li>
+          <li>怎么样鼓励更多人一起踏上这条路</li>
+        </ul>
+        <p class="closing reveal">奇迹不是一下子发生的，是一阶一阶走上去的。我想邀请你为这条路搭起第一块砖。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CORNER 05 ================= -->
+<section class="corner c-memory" id="memory">
+  <div class="wrap">
+    <div class="corner-grid">
+      <div class="photo-col reveal">
+        <figure class="polaroid">
+          <img src="img/memory.jpg" alt="老木柜与收藏的小物" loading="lazy">
+          <figcaption>一个小小的橱窗 · 记忆住下来的地方</figcaption>
+        </figure>
+      </div>
+      <div>
+        <span class="num reveal">05 · I AM REMEMBERING</span>
+        <h2 class="reveal">记忆博物馆</h2>
+        <p class="pull reveal">认真收藏那些证明我们真的来过的东西。</p>
+
+        <span class="qlabel reveal">这个角落为什么存在？</span>
+        <p class="body reveal">我是一个很喜欢收藏自己的美好记忆、并把它们放在生活中最显眼位置的人。可能是一张出发的票根，一张笑出牙龈的拍立得，一个和朋友一起还未完成的半成品。它们本身不一定贵重，但我一看到，就会突然想起那一天、那个人，想起当时我们笑得有多大声。</p>
+        <details class="more reveal">
+          <summary>读完整的故事</summary>
+          <p class="body">我一直觉得，记忆如果只躺在手机相册和聊天记录里，好像很容易被新的消息、新的照片一点点盖过去。但有些时刻我舍不得它消失。特别是这个窝开始之后，这里一定会发生很多很多第一次：第一次有人来搭窝，第一次有人在这里分享自己的故事，第一次有人在这里哭，第一次有人大笑到停不下来，第一次有人说"我也想试试"。</p>
+          <p class="body">所以我想给这些美好记忆准备一个可以住下来的地方。它不需要很宏大，也不需要很正式——它就像一个小小的博物馆，认真收藏那些证明我们真的来过、真的一起经历过、真的在这里留下过痕迹的东西。</p>
+        </details>
+
+        <span class="qlabel reveal">未来会发生什么？</span>
+        <p class="body reveal">每一次活动之后、每一次共创之后、每一个重要的小瞬间，都可以留下一件小小的展品——票根、合照、手写卡片、扭蛋壳、书签、干花。每一件东西旁边都会有一张小标签：它是什么，谁留下的，为什么被放在这里。未来有人站在这个橱窗前，会看到 I.N.G 是有很多人、很多夜晚、很多笑声和很多心动慢慢堆起来的地方。</p>
+
+        <span class="qlabel reveal">我们可以一起创造什么？</span>
+        <ul class="chips reveal">
+          <li>记忆博物馆的第一版主题和展示方式</li>
+          <li>怎么样为每一件小物写下它背后的故事和标签</li>
+          <li>怎么样设计每场活动之后，把记忆留下来的规则</li>
+        </ul>
+        <p class="closing reveal">我想邀请你一起放进第一批会被记住的东西，成为这座记忆博物馆的第一批策展人。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= CORNER 06 ================= -->
+<section class="corner c-sharing" id="sharing">
+  <div class="wrap">
+    <div class="corner-grid">
+      <div class="photo-col reveal">
+        <figure class="polaroid">
+          <img src="img/sharing.jpg" alt="堆满礼物盒与扭蛋机的柜子" loading="lazy">
+          <figcaption>最容易制造惊喜的角落 · 分享美好柜</figcaption>
+        </figure>
+      </div>
+      <div>
+        <span class="num reveal">06 · I AM SHARING</span>
+        <h2 class="reveal">分享美好柜</h2>
+        <p class="pull reveal">让美好在不同人的生命里继续流动。</p>
+
+        <span class="qlabel reveal">这个角落为什么存在？</span>
+        <p class="body reveal">我很喜欢给大家准备礼物，也很喜欢收到礼物。一份礼物承载着我的美好记忆，和我无声的挂念。而当这份礼物和挂念被分享出去时，就变成两个人心里都有的东西。</p>
+        <details class="more reveal">
+          <summary>读完整的故事</summary>
+          <p class="body">我也很喜欢收到礼物和美好——因为它们不仅是一个物件，那是生活不期而遇的小确幸，是来自身边的人和世界的爱，是被宠着和呵护着的实证。我很想把这份美好和小确幸分享给大家，让来到 I.N.G 的人不只是带走一个活动体验，而是真的带走一点来自另一个人的温柔。让美好的光，亮点燃更多的光。</p>
+          <p class="body">所以我想做一个分享美好柜。你可以带来一个曾经温暖过你的小东西，写下它的故事，把它留在这里；也可以从这里带走一个来自陌生人或朋友的心意。它不是交换礼物这么简单——它更像是让美好在不同人的生命里继续流动。</p>
+        </details>
+
+        <span class="qlabel reveal">未来会发生什么？</span>
+        <p class="body reveal">也许会有一个扭蛋机，也许会有很多编号的小盒子，里面装着不同人留下的礼物和故事。每个人可以带来 1-2 个美好——一本小书、一张卡片、一包好喝的茶、一句很喜欢的话。来到这里的人扭开一颗蛋，抽到一个编号，打开一个未知的小礼物。她带走的不只是东西，还有上一个人留下的那句话。</p>
+
+        <span class="qlabel reveal">我们可以一起创造什么？</span>
+        <ul class="chips reveal">
+          <li>分享美好柜和扭蛋玩法的设计</li>
+          <li>礼物编号、交换规则、故事卡片和领取方式</li>
+          <li>第一批会流动的美好，和第一批写给陌生人的温柔</li>
+        </ul>
+        <p class="closing reveal">未来会有人在这里意外收到一份刚刚好的心意，然后觉得今天好像突然变亮了一点。我想邀请你一起，把第一份美好放进这个柜子。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FINALE ================= -->
+<section class="finale">
+  <div class="bg"></div><div class="tint"></div>
+  <div class="wrap">
+    <div class="kicker reveal" style="color:#F2CFA0">The First Build</div>
+    <h2 class="reveal">和我一起<br>搭一个窝么~</h2>
+    <p class="reveal">这六个角落，都还没有长成最终的模样。<br>如果哪一个让你心动了——它可能就在等你。</p>
+    <div class="glow-line reveal">I AM GLOWING NOW</div>
+  </div>
+</section>
+
+<footer>i.n.g · a nest in progress · 2026</footer>
+
+<script>
+  // scroll progress
+  const bar = document.getElementById('bar');
+  addEventListener('scroll', () => {
+    const h = document.documentElement;
+    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
+  }, {passive:true});
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+  }, {threshold:.12, rootMargin:'0px 0px -40px 0px'});
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+</script>
+</body>
+</html>
