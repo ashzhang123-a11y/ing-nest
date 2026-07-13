@@ -2,3 +2,5 @@ compress_web.py
 qa.html
 qa_*.html
 qa_shots/
+gen_corners.py
+gen_qr.py
