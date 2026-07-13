@@ -75,9 +75,28 @@
   .label{display:inline-block;font-weight:700;font-size:14.5px;letter-spacing:.03em;
     color:var(--hue);background:color-mix(in srgb,var(--hue) 13%,var(--paper));
     padding:5px 16px;border-radius:999px;margin-bottom:1.3em}
-  .why p{color:var(--body);margin-bottom:1.25em;font-size:17px}
+  .why .inner{position:relative;padding-left:24px}
+  .why p{color:var(--body);margin-bottom:1.35em;font-size:17px}
   .why p.lead{color:var(--ink);font-size:18px}
   .why p strong{color:var(--hue)}
+  /* 首字下沉，像一封手记的开头 */
+  .why p.lead::first-letter{font-size:3.2em;float:left;line-height:.82;
+    margin:.06em .16em -.04em 0;color:var(--hue);font-weight:700}
+  /* 左侧阅读进度条 */
+  .rail{position:absolute;left:6px;top:4px;bottom:4px;width:2px;border-radius:2px;
+    background:color-mix(in srgb,var(--hue) 15%,transparent)}
+  .rail .fill{position:absolute;top:0;left:0;width:100%;height:0;border-radius:2px;
+    background:var(--hue);box-shadow:0 0 8px color-mix(in srgb,var(--hue) 60%,transparent)}
+  /* 荧光笔高亮：滚到时像笔刷划过 */
+  .hl{background-image:linear-gradient(color-mix(in srgb,var(--hue) 30%,transparent),color-mix(in srgb,var(--hue) 30%,transparent));
+    background-repeat:no-repeat;background-position:0 84%;background-size:0% 42%;
+    transition:background-size 1s cubic-bezier(.2,.7,.2,1) .15s;
+    padding:0 .06em;color:var(--ink);font-weight:700}
+  .hl.in{background-size:100% 42%}
+  /* 段末引导，把人带到揭晓卡 */
+  .more-cue{text-align:center;margin:2.6em 0 .2em;font-family:var(--serif-en);
+    font-style:italic;font-size:13px;letter-spacing:.14em;color:var(--hue)}
+  .more-cue::after{content:"↓";display:block;font-size:18px;margin-top:7px;animation:bob 2.2s ease-in-out infinite}
 
   .band{position:relative;min-height:44svh;margin:3vh 0;overflow:hidden;isolation:isolate;display:flex;align-items:flex-end}
   .band .bg{position:absolute;inset:0;z-index:-2;width:100%;height:118%;top:-9%;object-fit:cover}
@@ -115,7 +134,8 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .reveal{opacity:1!important;transform:none!important;transition:none}
-    .token,.token::after,.hint .finger,.down::after{animation:none}
+    .token,.token::after,.hint .finger,.down::after,.more-cue::after{animation:none}
+    .hl{background-size:100% 42%!important;transition:none}
     .msg .bg,.band .bg{top:0;height:100%}
   }
 </style>
@@ -147,30 +167,34 @@
     <div class="down">往下，看看它为什么存在</div>
   </section>
 
-  <!-- why it exists -->
+  <!-- why it exists : an unfolding hand-written note -->
   <section class="why">
     <div class="wrap">
       <span class="label reveal">这个角落，为什么存在？</span>
-      <p class="lead reveal">我为自己写下的墓志铭是【她曾精彩的绽放过】。我希望我的人生如烟花般灿烂，即使短暂也要在升空的瞬间肆意绽放。我从不恐惧死亡，但我恐惧暗淡无光。</p>
-      <p class="reveal">所以即使我知道世界荒诞，知道或许一切都是一场空，知道燃和焚本就共生，我也仍然想要选择满怀激情的人生——在活着的一秒，肆意绽放属于我的光芒，给予这个世界我的热烈。</p>
-      <p class="reveal">在过去的一年，我遇见了好多可爱又宝藏的人儿，她们在我的天空都留下了一束束绚丽耀眼的光芒。我看到她们有很多奇思妙想，有自己的内心坚持和理想，正在试着走自己的路，在做自己热爱的事情的时候眼睛里在发光。然而不是所有人都看到了自己的光——或许会怀疑自己，会觉得自己没什么特别，觉得自己还不够厉害、还没准备好。可是我想告诉来到 I.N.G 的每一个人：你不需要成为谁才值得被看见，此时此刻的你正在发光。</p>
-      <p class="reveal">烟花会因自己绽放的光芒而开心，看到烟花的人也会因为这绚烂的色彩而兴奋。所以我想在 I.N.G 留下一片天空，给这些闪闪发光的可爱人们。未来站在这面墙前的人看见，原来有这么多人正在发出自己的光——然后有一天，她会觉得，我也可以。</p>
+      <div class="inner">
+        <div class="rail"><div class="fill" id="rail"></div></div>
+        <p class="lead reveal">我为自己写下的墓志铭是【她曾精彩的绽放过】。我希望我的人生如烟花般灿烂，即使短暂也要在升空的瞬间肆意绽放。我从不恐惧死亡，但我恐惧暗淡无光。</p>
+        <p class="reveal">所以即使我知道世界荒诞，知道或许一切都是一场空，知道燃和焚本就共生，我也仍然想要选择满怀激情的人生——在活着的一秒，肆意绽放属于我的光芒，给予这个世界我的热烈。</p>
+        <p class="reveal">在过去的一年，我遇见了好多可爱又宝藏的人儿，她们在我的天空都留下了一束束绚丽耀眼的光芒。我看到她们有很多奇思妙想，有自己的内心坚持和理想，正在试着走自己的路，在做自己热爱的事情的时候眼睛里在发光。然而不是所有人都看到了自己的光——或许会怀疑自己，会觉得自己没什么特别，觉得自己还不够厉害、还没准备好。可是我想告诉来到 I.N.G 的每一个人：<span class="hl">你不需要成为谁才值得被看见，此时此刻的你正在发光</span>。</p>
+        <p class="reveal">烟花会因自己绽放的光芒而开心，看到烟花的人也会因为这绚烂的色彩而兴奋。所以我想在 I.N.G 留下一片天空，给这些闪闪发光的可爱人们。未来站在这面墙前的人看见，原来有这么多人正在发出自己的光——然后有一天，她会觉得，我也可以。</p>
+      </div>
+      <div class="more-cue reveal">读到这里，还有一句想问你</div>
     </div>
   </section>
 
-  <!-- second image -->
-  <section class="band">
-    <img class="bg" src="../../img/glow_f.webp" alt="" loading="lazy" decoding="async" data-px>
-    <div class="tint"></div>
-  </section>
-
-  <!-- tap to reveal -->
+  <!-- tap to reveal : the payoff question -->
   <div class="rev">
     <div class="rc reveal" id="rc">
       <div class="q" id="rcq">你有没有，正在发着光却没发现？<span class="dot">＋</span></div>
       <div class="a"><p>你热爱的样子，认真的样子，<br>就是你发光的样子。</p></div>
     </div>
   </div>
+
+  <!-- second image : a breath before the sign-off -->
+  <section class="band">
+    <img class="bg" src="../../img/glow_f.webp" alt="" loading="lazy" decoding="async" data-px>
+    <div class="tint"></div>
+  </section>
 
   <!-- signature -->
   <section class="sig">
@@ -236,9 +260,18 @@
     })();
   }
 
-  /* ---- reveal on scroll ---- */
+  /* ---- reveal on scroll (paragraphs + highlighter) ---- */
   const io=new IntersectionObserver((es)=>{for(const e of es)if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}},{threshold:.16,rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  document.querySelectorAll('.reveal,.hl').forEach(el=>io.observe(el));
+
+  /* ---- story reading-progress rail ---- */
+  const inner=document.querySelector('.why .inner'), rail=document.getElementById('rail');
+  if(inner&&rail){
+    function railUpd(){const r=inner.getBoundingClientRect();const vh=innerHeight;
+      const prog=(vh*0.62 - r.top)/r.height;
+      rail.style.height=Math.max(0,Math.min(1,prog))*100+'%';}
+    addEventListener('scroll',railUpd,{passive:true}); addEventListener('resize',railUpd); railUpd();
+  }
 
   /* ---- tap to reveal card ---- */
   document.getElementById('rcq').addEventListener('click',()=>document.getElementById('rc').classList.toggle('open'));

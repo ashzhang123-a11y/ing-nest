@@ -75,9 +75,28 @@
   .label{display:inline-block;font-weight:700;font-size:14.5px;letter-spacing:.03em;
     color:var(--hue);background:color-mix(in srgb,var(--hue) 13%,var(--paper));
     padding:5px 16px;border-radius:999px;margin-bottom:1.3em}
-  .why p{color:var(--body);margin-bottom:1.25em;font-size:17px}
+  .why .inner{position:relative;padding-left:24px}
+  .why p{color:var(--body);margin-bottom:1.35em;font-size:17px}
   .why p.lead{color:var(--ink);font-size:18px}
   .why p strong{color:var(--hue)}
+  /* 首字下沉，像一封手记的开头 */
+  .why p.lead::first-letter{font-size:3.2em;float:left;line-height:.82;
+    margin:.06em .16em -.04em 0;color:var(--hue);font-weight:700}
+  /* 左侧阅读进度条 */
+  .rail{position:absolute;left:6px;top:4px;bottom:4px;width:2px;border-radius:2px;
+    background:color-mix(in srgb,var(--hue) 15%,transparent)}
+  .rail .fill{position:absolute;top:0;left:0;width:100%;height:0;border-radius:2px;
+    background:var(--hue);box-shadow:0 0 8px color-mix(in srgb,var(--hue) 60%,transparent)}
+  /* 荧光笔高亮：滚到时像笔刷划过 */
+  .hl{background-image:linear-gradient(color-mix(in srgb,var(--hue) 30%,transparent),color-mix(in srgb,var(--hue) 30%,transparent));
+    background-repeat:no-repeat;background-position:0 84%;background-size:0% 42%;
+    transition:background-size 1s cubic-bezier(.2,.7,.2,1) .15s;
+    padding:0 .06em;color:var(--ink);font-weight:700}
+  .hl.in{background-size:100% 42%}
+  /* 段末引导，把人带到揭晓卡 */
+  .more-cue{text-align:center;margin:2.6em 0 .2em;font-family:var(--serif-en);
+    font-style:italic;font-size:13px;letter-spacing:.14em;color:var(--hue)}
+  .more-cue::after{content:"↓";display:block;font-size:18px;margin-top:7px;animation:bob 2.2s ease-in-out infinite}
 
   .band{position:relative;min-height:44svh;margin:3vh 0;overflow:hidden;isolation:isolate;display:flex;align-items:flex-end}
   .band .bg{position:absolute;inset:0;z-index:-2;width:100%;height:118%;top:-9%;object-fit:cover}
@@ -115,7 +134,8 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .reveal{opacity:1!important;transform:none!important;transition:none}
-    .token,.token::after,.hint .finger,.down::after{animation:none}
+    .token,.token::after,.hint .finger,.down::after,.more-cue::after{animation:none}
+    .hl{background-size:100% 42%!important;transition:none}
     .msg .bg,.band .bg{top:0;height:100%}
   }
 </style>
@@ -147,29 +167,33 @@
     <div class="down">往下，看看它为什么存在</div>
   </section>
 
-  <!-- why it exists -->
+  <!-- why it exists : an unfolding hand-written note -->
   <section class="why">
     <div class="wrap">
       <span class="label reveal">这个角落，为什么存在？</span>
-      <p class="lead reveal">我很喜欢给大家准备礼物，也很喜欢收到礼物。一份礼物承载着我的美好记忆，和我无声的挂念。而当这份礼物和挂念被分享出去时，就变成两个人心里都有的东西。</p>
-      <p class="reveal">我也很喜欢收到礼物和美好——因为它们不仅是一个物件，那是生活不期而遇的小确幸，是来自身边的人和世界的爱，是被宠着和呵护着的实证。我很想把这份美好和小确幸分享给大家，让来到 I.N.G 的人不只是带走一个活动体验，而是真的带走一点来自另一个人的温柔。让美好的光，亮点燃更多的光。</p>
-      <p class="reveal">所以我想做一个分享美好柜。你可以带来一个曾经温暖过你的小东西，写下它的故事，把它留在这里；也可以从这里带走一个来自陌生人或朋友的心意。它不是交换礼物这么简单——它更像是让美好在不同人的生命里继续流动。</p>
+      <div class="inner">
+        <div class="rail"><div class="fill" id="rail"></div></div>
+        <p class="lead reveal">我很喜欢给大家准备礼物，也很喜欢收到礼物。一份礼物承载着我的美好记忆，和我无声的挂念。而<span class="hl">当这份礼物和挂念被分享出去时，就变成两个人心里都有的东西</span>。</p>
+        <p class="reveal">我也很喜欢收到礼物和美好——因为它们不仅是一个物件，那是生活不期而遇的小确幸，是来自身边的人和世界的爱，是被宠着和呵护着的实证。我很想把这份美好和小确幸分享给大家，让来到 I.N.G 的人不只是带走一个活动体验，而是真的带走一点来自另一个人的温柔。让美好的光，亮点燃更多的光。</p>
+        <p class="reveal">所以我想做一个分享美好柜。你可以带来一个曾经温暖过你的小东西，写下它的故事，把它留在这里；也可以从这里带走一个来自陌生人或朋友的心意。它不是交换礼物这么简单——它更像是让美好在不同人的生命里继续流动。</p>
+      </div>
+      <div class="more-cue reveal">读到这里，还有一句想问你</div>
     </div>
   </section>
 
-  <!-- second image -->
-  <section class="band">
-    <img class="bg" src="../../img/sharing_f.webp" alt="" loading="lazy" decoding="async" data-px>
-    <div class="tint"></div>
-  </section>
-
-  <!-- tap to reveal -->
+  <!-- tap to reveal : the payoff question -->
   <div class="rev">
     <div class="rc reveal" id="rc">
       <div class="q" id="rcq">如果送一句话给陌生人，你会写什么？<span class="dot">＋</span></div>
       <div class="a"><p>你带走一点温柔，<br>也留下一点。美好就这样流动起来。</p></div>
     </div>
   </div>
+
+  <!-- second image : a breath before the sign-off -->
+  <section class="band">
+    <img class="bg" src="../../img/sharing_f.webp" alt="" loading="lazy" decoding="async" data-px>
+    <div class="tint"></div>
+  </section>
 
   <!-- signature -->
   <section class="sig">
@@ -235,9 +259,18 @@
     })();
   }
 
-  /* ---- reveal on scroll ---- */
+  /* ---- reveal on scroll (paragraphs + highlighter) ---- */
   const io=new IntersectionObserver((es)=>{for(const e of es)if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}},{threshold:.16,rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+  document.querySelectorAll('.reveal,.hl').forEach(el=>io.observe(el));
+
+  /* ---- story reading-progress rail ---- */
+  const inner=document.querySelector('.why .inner'), rail=document.getElementById('rail');
+  if(inner&&rail){
+    function railUpd(){const r=inner.getBoundingClientRect();const vh=innerHeight;
+      const prog=(vh*0.62 - r.top)/r.height;
+      rail.style.height=Math.max(0,Math.min(1,prog))*100+'%';}
+    addEventListener('scroll',railUpd,{passive:true}); addEventListener('resize',railUpd); railUpd();
+  }
 
   /* ---- tap to reveal card ---- */
   document.getElementById('rcq').addEventListener('click',()=>document.getElementById('rc').classList.toggle('open'));
