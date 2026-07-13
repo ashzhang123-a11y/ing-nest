@@ -115,6 +115,25 @@
   .qlabel{display:inline-block;font-weight:700;font-size:15px;letter-spacing:.03em;margin:0 0 .85em;padding:5px 16px;border-radius:999px}
   .corner-body .qlabel,.corner-after .qlabel{color:var(--hue);background:color-mix(in srgb,var(--hue) 13%,var(--paper))}
   .lead{font-size:17.5px;color:var(--ink);margin-bottom:1.15em}
+  /* —— 手记式长文呈现 —— */
+  .corner-body .inner{position:relative;padding-left:24px}
+  .corner-body .lead::first-letter{font-size:3.2em;float:left;line-height:.82;margin:.06em .16em -.04em 0;color:var(--hue);font-weight:700}
+  .corner-body p{margin-bottom:1.3em}
+  .rail{position:absolute;left:6px;top:4px;bottom:4px;width:2px;border-radius:2px;background:color-mix(in srgb,var(--hue) 15%,transparent)}
+  .rail .fill{position:absolute;top:0;left:0;width:100%;height:0;border-radius:2px;background:var(--hue);box-shadow:0 0 8px color-mix(in srgb,var(--hue) 60%,transparent)}
+  .hl{background-image:linear-gradient(color-mix(in srgb,var(--hue) 30%,transparent),color-mix(in srgb,var(--hue) 30%,transparent));background-repeat:no-repeat;background-position:0 84%;background-size:0% 42%;transition:background-size 1s cubic-bezier(.2,.7,.2,1) .15s;padding:0 .06em;color:var(--ink);font-weight:700}
+  .hl.in{background-size:100% 42%}
+  .more-cue{text-align:center;margin:2.2em 0 1.4em;font-family:var(--serif-en);font-style:italic;font-size:13px;letter-spacing:.14em;color:var(--hue)}
+  .more-cue::after{content:"↓";display:block;font-size:18px;margin-top:7px;animation:bob 2.2s ease-in-out infinite}
+  /* —— 互动揭晓卡 —— */
+  .rev{max-width:560px;margin:0 auto;padding:0 26px 2vh}
+  .rc{border-radius:16px;border:1px solid color-mix(in srgb,var(--hue) 28%,transparent);background:color-mix(in srgb,var(--hue) 6%,var(--paper));overflow:hidden}
+  .rc .q{padding:20px 22px;cursor:pointer;font-weight:700;font-size:16.5px;color:var(--hue);display:flex;align-items:center;justify-content:space-between;gap:14px;-webkit-tap-highlight-color:transparent}
+  .rc .q .dot{width:26px;height:26px;flex:none;border-radius:50%;border:1.5px solid var(--hue);display:flex;align-items:center;justify-content:center;font-family:var(--serif-en);font-size:16px;transition:transform .4s ease}
+  .rc.open .q .dot{transform:rotate(45deg)}
+  .rc .a{max-height:0;overflow:hidden;transition:max-height .6s ease}
+  .rc.open .a{max-height:260px}
+  .rc .a p{padding:0 22px 22px;color:var(--ink-soft);font-size:16.5px;margin:0;text-wrap:pretty}
 
   /* future band */
   .band{position:relative;min-height:54svh;display:flex;align-items:flex-end;color:#FBEFDD;isolation:isolate;overflow:hidden;margin-top:2vh}
@@ -160,7 +179,8 @@
   @media (prefers-reduced-motion:reduce){
     html{scroll-behavior:auto}
     .reveal{opacity:1 !important;transform:none !important;transition:none}
-    .scroll-hint::after{animation:none}
+    .scroll-hint::after,.more-cue::after{animation:none}
+    .hl{background-size:100% 42%!important;transition:none}
     #motes{display:none}
     img.px-bg{top:0;height:100%}
   }
@@ -247,10 +267,17 @@
   <div class="corner-body">
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
+      <div class="inner">
+        <div class="rail"><div class="fill"></div></div>
       <p class="lead reveal">在过去的一年，我一直试图在找自己，我是谁，我从哪里来，我要去哪里。我在找自己的来时路，找为什么成为了现在的自己。</p>
-      <p class="body reveal">但当有一天我脑海里面，一个积极乐观强大的我和一个懦弱无力退缩的我在疯狂争论吵架时，我在大脑里看着这两个我自己意识到：塑造我的不是过往的我，而是此时此刻的我，选择成为谁。我们不是已经成为谁，而是正在成为谁——这是我很喜欢 ING 这个词的原因之一。</p>
+      <p class="body reveal">但当有一天我脑海里面，一个积极乐观强大的我和一个懦弱无力退缩的我在疯狂争论吵架时，我在大脑里看着这两个我自己意识到：<span class="hl">塑造我的不是过往的我，而是此时此刻的我，选择成为谁</span>。我们不是已经成为谁，而是正在成为谁——这是我很喜欢 ING 这个词的原因之一。</p>
       <p class="body reveal">我想让每个来到这里的人，都可以在进入这扇门之后，留下一个此时此刻想要选择成为的自己：<strong>I am ______ING</strong></p>
+      </div>
+      <div class="more-cue reveal">读到这里，还有一句想问你</div>
     </div>
+  </div>
+  <div class="rev c-becoming">
+    <div class="rc reveal"><div class="q">此刻的你，想成为谁？<span class="dot">＋</span></div><div class="a"><p>把它写下来，留在这面墙上。<br>你不必已经是谁，你正在成为。</p></div></div>
   </div>
   <div class="band" data-px>
     <div class="px"><img class="px-bg" src="img/becoming_f.webp" alt="" loading="lazy" decoding="async"></div>
@@ -285,10 +312,17 @@
   <div class="corner-body">
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
+      <div class="inner">
+        <div class="rail"><div class="fill"></div></div>
       <p class="lead reveal">我是一个时常在思考活着的意义是什么的人，我会为自己画一个大大圆圆美好的未来的饼，然后屁颠屁颠的紧盯着自己以为的美好目标冲冲冲。但我有时候走到那个饼面前发现原来只是一个泡泡没意思，有时候会在一片迷雾里看不到未来的希望，有时候会觉得好多事情无意义，觉得迷茫又无趣。</p>
-      <p class="body reveal">当我直面这荒谬无意义的世界，不再欺骗自己，不再活在未来的泡泡里，我意识到与其期待未来的不知多久到来的幻影，不如珍惜当下正在发生的美好。于是我开始学习前行的路上收集生活里的小确幸——那些确幸的时刻是聊天时的开怀大笑，是看见春天路边花开时的喜悦，是吃到家里酸辣可口美食的满足，是被人紧紧拥抱和呵护宠爱着的幸福，是无所事事脑袋空空在沙滩上看着日落绚烂，然后感叹一句"生活可真美好"的无数个点点滴滴的小瞬间。</p>
+      <p class="body reveal">当我直面这荒谬无意义的世界，不再欺骗自己，不再活在未来的泡泡里，我意识到<span class="hl">与其期待未来的不知多久到来的幻影，不如珍惜当下正在发生的美好</span>。于是我开始学习前行的路上收集生活里的小确幸——那些确幸的时刻是聊天时的开怀大笑，是看见春天路边花开时的喜悦，是吃到家里酸辣可口美食的满足，是被人紧紧拥抱和呵护宠爱着的幸福，是无所事事脑袋空空在沙滩上看着日落绚烂，然后感叹一句"生活可真美好"的无数个点点滴滴的小瞬间。</p>
       <p class="body reveal">所以我想要在家里最显眼的角落把最绚烂的日落搬回家，让每个看到 I.N.G 日落的人，长长舒一口气说，生活真美好。</p>
+      </div>
+      <div class="more-cue reveal">读到这里，还有一句想问你</div>
     </div>
+  </div>
+  <div class="rev c-enjoy">
+    <div class="rc reveal"><div class="q">今天，你的小确幸是什么？<span class="dot">＋</span></div><div class="a"><p>也许只是一杯刚好的茶，<br>一阵刚好的风。此刻，就够美好了。</p></div></div>
   </div>
   <div class="band" data-px>
     <div class="px"><img class="px-bg" src="img/enjoy_f.webp" alt="" loading="lazy" decoding="async"></div>
@@ -322,11 +356,18 @@
   <div class="corner-body">
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
+      <div class="inner">
+        <div class="rail"><div class="fill"></div></div>
       <p class="lead reveal">我为自己写下的墓志铭是【她曾精彩的绽放过】。我希望我的人生如烟花般灿烂，即使短暂也要在升空的瞬间肆意绽放。我从不恐惧死亡，但我恐惧暗淡无光。</p>
       <p class="body reveal">所以即使我知道世界荒诞，知道或许一切都是一场空，知道燃和焚本就共生，我也仍然想要选择满怀激情的人生——在活着的一秒，肆意绽放属于我的光芒，给予这个世界我的热烈。</p>
-      <p class="body reveal">在过去的一年，我遇见了好多可爱又宝藏的人儿，她们在我的天空都留下了一束束绚丽耀眼的光芒。我看到她们有很多奇思妙想，有自己的内心坚持和理想，正在试着走自己的路，在做自己热爱的事情的时候眼睛里在发光。然而不是所有人都看到了自己的光——或许会怀疑自己，会觉得自己没什么特别，觉得自己还不够厉害、还没准备好。可是我想告诉来到 I.N.G 的每一个人：你不需要成为谁才值得被看见，此时此刻的你正在发光。</p>
+      <p class="body reveal">在过去的一年，我遇见了好多可爱又宝藏的人儿，她们在我的天空都留下了一束束绚丽耀眼的光芒。我看到她们有很多奇思妙想，有自己的内心坚持和理想，正在试着走自己的路，在做自己热爱的事情的时候眼睛里在发光。然而不是所有人都看到了自己的光——或许会怀疑自己，会觉得自己没什么特别，觉得自己还不够厉害、还没准备好。可是我想告诉来到 I.N.G 的每一个人：<span class="hl">你不需要成为谁才值得被看见，此时此刻的你正在发光</span>。</p>
       <p class="body reveal">烟花会因自己绽放的光芒而开心，看到烟花的人也会因为这绚烂的色彩而兴奋。所以我想在 I.N.G 留下一片天空，给这些闪闪发光的可爱人们。未来站在这面墙前的人看见，原来有这么多人正在发出自己的光——然后有一天，她会觉得，我也可以。</p>
+      </div>
+      <div class="more-cue reveal">读到这里，还有一句想问你</div>
     </div>
+  </div>
+  <div class="rev c-glow">
+    <div class="rc reveal"><div class="q">你有没有，正在发着光却没发现？<span class="dot">＋</span></div><div class="a"><p>你热爱的样子，认真的样子，<br>就是你发光的样子。</p></div></div>
   </div>
   <div class="band" data-px>
     <div class="px"><img class="px-bg" src="img/glow_f.webp" alt="" loading="lazy" decoding="async"></div>
@@ -361,10 +402,17 @@
   <div class="corner-body">
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
+      <div class="inner">
+        <div class="rail"><div class="fill"></div></div>
       <p class="lead reveal">我是个脑子时刻在转、有好多乱七八糟想法冒出来的人。有些念头很小："我想晒一天太阳"；有些念头别人听了觉得奇怪："我想去流浪"；有些念头很不切实际："我想建一个游乐园"。聊到每一个想法时我都会很激动、眼睛闪闪发光——但好多想法还没来得及发生，就会有另外一个声音出现：你真的做得到吗？然后这些奇思妙想就会被放下。</p>
       <p class="body reveal">创办一个有趣的空间，大概是我六七年前就一直盘旋在脑子里的事情。但之前我一直给自己说：时机不对，没准备好，好难，不知道从哪里开始。但这次我给自己说：没关系，来让我试试看，人生不就是体验，活着不就是得折腾。</p>
-      <p class="body reveal">所以我想给奇思妙想们准备一个家——把大家在脑海里盘旋想试试、很好奇、不知道怎么样的想法，不如在 I.N.G 试试看！让这些奇思妙想被看见，被认真对待，被实现。I.N.G 是正在进行时：不是过去完成时，不需要你完成所有准备；也不是将来时，不需要等待未来某一天。如果想试试，不如就现在，give it a try。</p>
+      <p class="body reveal">所以我想给奇思妙想们准备一个家——把大家在脑海里盘旋想试试、很好奇、不知道怎么样的想法，不如在 I.N.G 试试看！让这些奇思妙想被看见，被认真对待，被实现。I.N.G 是正在进行时：不是过去完成时，不需要你完成所有准备；也不是将来时，不需要等待未来某一天。<span class="hl">如果想试试，不如就现在，give it a try</span>。</p>
+      </div>
+      <div class="more-cue reveal">读到这里，还有一句想问你</div>
     </div>
+  </div>
+  <div class="rev c-moveon">
+    <div class="rc reveal"><div class="q">你一直想试、却没敢试的是什么？<span class="dot">＋</span></div><div class="a"><p>奇迹不是一下子发生的，<br>是一阶一阶走上去的。不如就现在。</p></div></div>
   </div>
   <div class="band" data-px>
     <div class="px"><img class="px-bg" src="img/moveon_f.webp" alt="" loading="lazy" decoding="async"></div>
@@ -399,10 +447,17 @@
   <div class="corner-body">
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
-      <p class="lead reveal">我是一个很喜欢收藏自己的美好记忆、并把它们放在生活中最显眼位置的人。可能是一张出发的票根，一张笑出牙龈的拍立得，一个和朋友一起还未完成的半成品。它们本身不一定贵重，但我一看到，就会突然想起那一天、那个人，想起当时我们笑得有多大声。</p>
+      <div class="inner">
+        <div class="rail"><div class="fill"></div></div>
+      <p class="lead reveal">我是一个很喜欢收藏自己的美好记忆、并把它们放在生活中最显眼位置的人。可能是一张出发的票根，一张笑出牙龈的拍立得，一个和朋友一起还未完成的半成品。它们本身不一定贵重，<span class="hl">但我一看到，就会突然想起那一天、那个人</span>，想起当时我们笑得有多大声。</p>
       <p class="body reveal">我一直觉得，记忆如果只躺在手机相册和聊天记录里，好像很容易被新的消息、新的照片一点点盖过去。但有些时刻我舍不得它消失。特别是这个窝开始之后，这里一定会发生很多很多第一次：第一次有人来搭窝，第一次有人在这里分享自己的故事，第一次有人在这里哭，第一次有人大笑到停不下来，第一次有人说"我也想试试"。</p>
       <p class="body reveal">所以我想给这些美好记忆准备一个可以住下来的地方。它不需要很宏大，也不需要很正式——它就像一个小小的博物馆，认真收藏那些证明我们真的来过、真的一起经历过、真的在这里留下过痕迹的东西。</p>
+      </div>
+      <div class="more-cue reveal">读到这里，还有一句想问你</div>
     </div>
+  </div>
+  <div class="rev c-memory">
+    <div class="rc reveal"><div class="q">有没有一样小东西，你一直舍不得扔？<span class="dot">＋</span></div><div class="a"><p>它不一定贵重，<br>但它记得你的某一天。</p></div></div>
   </div>
   <div class="band" data-px>
     <div class="px"><img class="px-bg" src="img/memory_f.webp" alt="" loading="lazy" decoding="async"></div>
@@ -437,10 +492,17 @@
   <div class="corner-body">
     <div class="wrap">
       <span class="qlabel reveal">这个角落为什么存在？</span>
-      <p class="lead reveal">我很喜欢给大家准备礼物，也很喜欢收到礼物。一份礼物承载着我的美好记忆，和我无声的挂念。而当这份礼物和挂念被分享出去时，就变成两个人心里都有的东西。</p>
+      <div class="inner">
+        <div class="rail"><div class="fill"></div></div>
+      <p class="lead reveal">我很喜欢给大家准备礼物，也很喜欢收到礼物。一份礼物承载着我的美好记忆，和我无声的挂念。<span class="hl">而当这份礼物和挂念被分享出去时，就变成两个人心里都有的东西</span>。</p>
       <p class="body reveal">我也很喜欢收到礼物和美好——因为它们不仅是一个物件，那是生活不期而遇的小确幸，是来自身边的人和世界的爱，是被宠着和呵护着的实证。我很想把这份美好和小确幸分享给大家，让来到 I.N.G 的人不只是带走一个活动体验，而是真的带走一点来自另一个人的温柔。让美好的光，亮点燃更多的光。</p>
       <p class="body reveal">所以我想做一个分享美好柜。你可以带来一个曾经温暖过你的小东西，写下它的故事，把它留在这里；也可以从这里带走一个来自陌生人或朋友的心意。它不是交换礼物这么简单——它更像是让美好在不同人的生命里继续流动。</p>
+      </div>
+      <div class="more-cue reveal">读到这里，还有一句想问你</div>
     </div>
+  </div>
+  <div class="rev c-sharing">
+    <div class="rc reveal"><div class="q">如果送一句话给陌生人，你会写什么？<span class="dot">＋</span></div><div class="a"><p>你带走一点温柔，<br>也留下一点。美好就这样流动起来。</p></div></div>
   </div>
   <div class="band" data-px>
     <div class="px"><img class="px-bg" src="img/sharing_f.webp" alt="" loading="lazy" decoding="async"></div>
@@ -487,7 +549,18 @@
   const io = new IntersectionObserver((es) => {
     for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }, {threshold:.14, rootMargin:'0px 0px -40px 0px'});
-  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  document.querySelectorAll('.reveal,.hl').forEach(el => io.observe(el));
+
+  /* story reading-progress rails (one per corner) */
+  const stories = [...document.querySelectorAll('.corner-body .inner')];
+  function rails(){ const vh = innerHeight;
+    for (const s of stories){ const f = s.querySelector('.fill'); if(!f) continue;
+      const r = s.getBoundingClientRect(); const p = (vh*0.62 - r.top)/r.height;
+      f.style.height = Math.max(0,Math.min(1,p))*100 + '%'; } }
+  addEventListener('scroll', rails, {passive:true}); addEventListener('resize', rails); rails();
+
+  /* interactive reveal cards */
+  document.querySelectorAll('.rc .q').forEach(q => q.addEventListener('click', () => q.parentElement.classList.toggle('open')));
 
   if (!reduce) {
     const secs = [...document.querySelectorAll('[data-px]')];

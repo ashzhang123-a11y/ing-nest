@@ -4,3 +4,4 @@ qa_*.html
 qa_shots/
 gen_corners.py
 gen_qr.py
+enhance_main.py
