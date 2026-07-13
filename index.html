@@ -540,53 +540,70 @@
 <script>
   const reduce = matchMedia('(prefers-reduced-motion:reduce)').matches;
 
-  const bar = document.getElementById('bar');
-  addEventListener('scroll', () => {
-    const h = document.documentElement;
-    bar.style.width = (h.scrollTop / (h.scrollHeight - h.clientHeight) * 100) + '%';
-  }, {passive:true});
-
   const io = new IntersectionObserver((es) => {
     for (const e of es) if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
   }, {threshold:.14, rootMargin:'0px 0px -40px 0px'});
   document.querySelectorAll('.reveal,.hl').forEach(el => io.observe(el));
 
-  /* story reading-progress rails (one per corner) */
-  const stories = [...document.querySelectorAll('.corner-body .inner')];
-  function rails(){ const vh = innerHeight;
-    for (const s of stories){ const f = s.querySelector('.fill'); if(!f) continue;
-      const r = s.getBoundingClientRect(); const p = (vh*0.62 - r.top)/r.height;
-      f.style.height = Math.max(0,Math.min(1,p))*100 + '%'; } }
-  addEventListener('scroll', rails, {passive:true}); addEventListener('resize', rails); rails();
-
-  /* interactive reveal cards */
   document.querySelectorAll('.rc .q').forEach(q => q.addEventListener('click', () => q.parentElement.classList.toggle('open')));
 
-  if (!reduce) {
-    const secs = [...document.querySelectorAll('[data-px]')];
-    let ticking = false;
-    function parallax(){
-      const vh = innerHeight;
-      for (const s of secs){
-        const bg = s.querySelector('.px-bg'); if(!bg) continue;
-        const r = s.getBoundingClientRect();
-        if (r.bottom < -140 || r.top > vh + 140) continue;
-        const prog = (r.top + r.height/2 - vh/2) / vh;
-        bg.style.transform = 'translate3d(0,' + (prog * -48) + 'px,0)';
-      }
-      ticking = false;
-    }
-    addEventListener('scroll', () => { if(!ticking){ requestAnimationFrame(parallax); ticking = true; } }, {passive:true});
-    addEventListener('resize', parallax);
-    parallax();
-  }
+  /* ---- one unified scroll/resize pass: batch every read, then every write
+     (avoids the layout-thrashing you get from 3 separate scroll listeners
+     each interleaving reads and writes) ---- */
+  const bar = document.getElementById('bar');
+  const railTargets = [...document.querySelectorAll('.corner-body .inner')]
+    .map(s => ({ el: s, fill: s.querySelector('.fill') })).filter(s => s.fill);
+  const pxTargets = reduce ? [] : [...document.querySelectorAll('[data-px]')]
+    .map(s => ({ parent: s.parentElement, bg: s.querySelector('.px-bg') })).filter(s => s.bg);
 
+  let ticking = false;
+  function update(){
+    const vh = innerHeight, de = document.documentElement;
+    // reads
+    const barPct = de.scrollTop / (de.scrollHeight - de.clientHeight) * 100;
+    const railPct = railTargets.map(s => {
+      const r = s.el.getBoundingClientRect();
+      return Math.max(0, Math.min(1, (vh*0.62 - r.top) / r.height)) * 100;
+    });
+    const pxY = pxTargets.map(s => {
+      const r = s.parent.getBoundingClientRect();
+      if (r.bottom < -140 || r.top > vh + 140) return null;
+      return (r.top + r.height/2 - vh/2) / vh * -48;
+    });
+    // writes
+    bar.style.width = barPct + '%';
+    railTargets.forEach((s,i) => s.fill.style.height = railPct[i] + '%');
+    pxTargets.forEach((s,i) => { if (pxY[i] != null) s.bg.style.transform = 'translate3d(0,' + pxY[i] + 'px,0)'; });
+    ticking = false;
+  }
+  let scrolling = false, scrollEndTimer = null;
+  addEventListener('scroll', () => {
+    scrolling = true;
+    clearTimeout(scrollEndTimer);
+    scrollEndTimer = setTimeout(() => { scrolling = false; }, 150);
+    if(!ticking){ requestAnimationFrame(update); ticking = true; }
+  }, {passive:true});
+  addEventListener('resize', update);
+  update();
+
+  /* ---- ambient warm motes: one pre-rendered sprite, cheap drawImage per
+     particle (no per-frame gradient allocation), throttled to ~30fps, and
+     paused while the user is actively scrolling so it never competes with
+     the scroll thread at the exact moment jank would be most visible ---- */
   if (!reduce) {
     const cv = document.getElementById('motes'), cx = cv.getContext('2d');
-    let W, H, motes;
+    let W, H, motes, sprite, frame = 0;
+    function makeSprite(){
+      const S = 64, sc = document.createElement('canvas'); sc.width = sc.height = S;
+      const g = sc.getContext('2d').createRadialGradient(S/2,S/2,0,S/2,S/2,S/2);
+      g.addColorStop(0,'rgba(240,214,164,1)'); g.addColorStop(1,'rgba(240,214,164,0)');
+      const gc = sc.getContext('2d');
+      gc.fillStyle = g; gc.beginPath(); gc.arc(S/2,S/2,S/2,0,6.29); gc.fill();
+      return sc;
+    }
     function init(){
       W = cv.width = innerWidth; H = cv.height = innerHeight;
-      const n = Math.round(Math.min(28, innerWidth / 20));
+      const n = Math.round(Math.min(20, innerWidth / 26));
       motes = Array.from({length:n}, () => ({
         x: Math.random()*W, y: Math.random()*H,
         r: 1 + Math.random()*3, s: .1 + Math.random()*.34,
@@ -594,18 +611,21 @@
       }));
     }
     function draw(){
-      cx.clearRect(0,0,W,H);
-      for (const m of motes){
-        m.y -= m.s; m.x += Math.sin(m.d)*.2; m.d += .01;
-        if (m.y < -12){ m.y = H+12; m.x = Math.random()*W; }
-        const R = m.r*3.2;
-        const g = cx.createRadialGradient(m.x,m.y,0,m.x,m.y,R);
-        g.addColorStop(0,'rgba(240,214,164,'+m.a+')');
-        g.addColorStop(1,'rgba(240,214,164,0)');
-        cx.fillStyle = g; cx.beginPath(); cx.arc(m.x,m.y,R,0,6.29); cx.fill();
+      frame++;
+      if (!scrolling && frame % 2 === 0) { // ~30fps, skipped entirely mid-scroll
+        cx.clearRect(0,0,W,H);
+        for (const m of motes){
+          m.y -= m.s*2; m.x += Math.sin(m.d)*.4; m.d += .02;
+          if (m.y < -12){ m.y = H+12; m.x = Math.random()*W; }
+          const R = m.r*3.2;
+          cx.globalAlpha = m.a;
+          cx.drawImage(sprite, m.x-R, m.y-R, R*2, R*2);
+        }
+        cx.globalAlpha = 1;
       }
       requestAnimationFrame(draw);
     }
+    sprite = makeSprite();
     init(); draw();
     addEventListener('resize', init);
   }
