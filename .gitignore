@@ -5,3 +5,6 @@ qa_shots/
 gen_corners.py
 gen_qr.py
 enhance_main.py
+gen_lqip.py
+inject_lqip.py
+lqip_map.json
